@@ -1,0 +1,41 @@
+name: Merge Docs to gh-pages
+on: push
+  branches:
+    - 'develop' # Can I get it to push to develop only when the PR has a change in the `doc` directory?
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install Doxygen
+        run: ./scripts/install-doxygen.sh
+      - name: Update code
+        run: | 
+          'sed ' # Update CMakeLists.txt and compile_upp.sh
+      - name: Build docs
+        run: cd tests && ./compile_upp.sh
+      - name: Upload docs
+        uses: actions/upload-pages-artifact@v3
+        with: 
+          path: tests/build/html
+  update-docs:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    # Find out about permissions! 
+    permissions: 
+      pages: write
+      id-token: write 
+    #Find out about environment & outputs! 
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.output.page_url }}
+    steps: 
+      - name: Deploy HTMLs
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+
+          
+
+
