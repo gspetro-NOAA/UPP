@@ -2,6 +2,7 @@ name: Merge Docs to gh-pages
 on: push
   branches:
     - 'develop' # Can I get it to push to develop only when the PR has a change in the `doc` directory?
+    - 'feature/test-gh-actions'
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -12,7 +13,9 @@ jobs:
         run: ./scripts/install-doxygen.sh
       - name: Update code
         run: | 
-          'sed ' # Update CMakeLists.txt and compile_upp.sh
+          "sed -i 's/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)/g' CMakeLists.txt"
+          "sed -i 's/make install/make doc/g' compile_upp.sh"
+          # "sed -i'.bak' -e 's/make install/make doc/g' compile_upp.sh"
       - name: Build docs
         run: cd tests && ./compile_upp.sh
       - name: Upload docs
