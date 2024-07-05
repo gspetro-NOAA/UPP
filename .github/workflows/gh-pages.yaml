@@ -12,13 +12,26 @@ jobs:
     steps: 
       - name: Get Code
         uses: actions/checkout@v4
+      - name: Cache dependencies
+        id: cache-doxygen
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.doxygen
+            ~/usr/local/bin/doxygen
+          key: ${{ runner.os }}-doxygen-${{ hashFiles( '**/install_doxygen.sh' ) }}
       - name: Install Doxygen
+        if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: .github/scripts/install_doxygen.sh
       - name: Update code
+        env: 
+          - FIND: option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+          - REPLACE: option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)
         run: | 
-          "sed -i 's/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)/g' CMakeLists.txt"
-          "sed -i 's/make install/make doc/g' compile_upp.sh"
-          # "sed -i'.bak' -e 's/make install/make doc/g' compile_upp.sh"
+#"sed -i 's/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)/g' CMakeLists.txt"
+          sed -i 's/$FIND/$REPLACE/g' CMakeLists.txt
+          sed -i 's/make install/make doc/g' tests/compile_upp.sh
+# "sed -i'.bak' -e 's/make install/make doc/g' tests/compile_upp.sh"
       - name: Build docs
         run: cd tests && ./compile_upp.sh
       - name: Upload docs
