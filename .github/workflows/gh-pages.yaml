@@ -7,7 +7,7 @@ on:
     - 'feature/test-gh-actions'
   workflow_dispatch:
 jobs:
-  build-docs:
+  install-prerequisites:
     runs-on: ubuntu-latest
     steps: 
       - name: Get Code
@@ -18,8 +18,12 @@ jobs:
         with:
           path: |
             ~/.doxygen
-            ~/usr/local/bin/doxygen
+#            ~/usr/local/bin/doxygen
           key: ${{ runner.os }}-doxygen-${{ hashFiles( '**/install_doxygen.sh' ) }}
+  build-docs: 
+    runs-on: ubuntu-latest
+    needs: install-prerequisites
+    steps: 
       - name: Install Doxygen
         if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: $GITHUB_WORKSPACE/.github/scripts/install_doxygen.sh
