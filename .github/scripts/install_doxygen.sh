@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Steps to install Doxygen
 # Doxygen prerequisites flex, bison, make are already installed on Ubuntu-22.04 free runner
 
