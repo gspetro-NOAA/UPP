@@ -12,8 +12,6 @@ jobs:
     steps: 
       - name: Get Code
         uses: actions/checkout@v4
-        with:
-          path: UPP
       - name: Install Doxygen
         run: ${GITHUB_WORKSPACE}/.github/scripts/install_doxygen.sh
       - name: Update code
