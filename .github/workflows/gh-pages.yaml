@@ -17,7 +17,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/usr/local/bin/doxygen
+            /usr/local/bin/doxygen
+            ~/doxygen-1.9.8
           key: ${{ runner.os }}-doxygen-${{ hashFiles( '**/install_doxygen.sh' ) }}
       - name: Install Doxygen
         if: steps.cache-doxygen.outputs.cache-hit != 'true'
