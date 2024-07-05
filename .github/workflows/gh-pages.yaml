@@ -26,7 +26,7 @@ jobs:
       - name: Update code
         env: 
           - FIND: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
-          - REPLACE: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)'
+          - REPLACE: 'option(ENABLE_DOCS \"Enable generation of doxygen-based documentation.\" ON)'
         run: | 
           sed -i 's/$FIND/$REPLACE/g' CMakeLists.txt
           sed -i 's/make install/make doc/g' tests/compile_upp.sh
