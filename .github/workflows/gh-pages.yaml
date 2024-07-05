@@ -19,13 +19,13 @@ jobs:
           path: |
             ~/usr/local/bin/doxygen
           key: ${{ runner.os }}-doxygen-${{ hashFiles( '**/install_doxygen.sh' ) }}
+      - name: Install Doxygen
+        if: steps.cache-doxygen.outputs.cache-hit != 'true'
+        run: $GITHUB_WORKSPACE/.github/scripts/install_doxygen.sh    
   build-docs: 
     runs-on: ubuntu-latest
     needs: install-prerequisites
     steps: 
-      - name: Install Doxygen
-        if: steps.cache-doxygen.outputs.cache-hit != 'true'
-        run: $GITHUB_WORKSPACE/.github/scripts/install_doxygen.sh
       - name: Build docs
         run: |
           export CC=mpicc
