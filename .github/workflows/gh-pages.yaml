@@ -1,9 +1,11 @@
 name: Merge Docs to gh-pages
-on: [push, workflow_dispatch]
-  branches:
+on: 
+  push:
+    branches:
     - 'develop' # Can I get it to push to develop only when the PR has a change in the `doc` directory?
     - 'feature/automate-ghp'
     - 'feature/test-gh-actions'
+  workflow_dispatch:
 jobs:
   build-docs:
     runs-on: ubuntu-latest

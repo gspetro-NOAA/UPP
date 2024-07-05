@@ -20,7 +20,7 @@ make
 
 make install
 
-
+echo $(doxygen --version)
 
 #sudo apt-get install libiconv # Needed? Already there? 
 
