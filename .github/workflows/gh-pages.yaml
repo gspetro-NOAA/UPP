@@ -15,7 +15,7 @@ jobs:
         with:
           path: UPP
       - name: Install Doxygen
-        run: ./scripts/install-doxygen.sh
+        run: ${GITHUB_WORKSPACE}/scripts/install-doxygen.sh
       - name: Update code
         run: | 
           "sed -i 's/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)/option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)/g' CMakeLists.txt"
