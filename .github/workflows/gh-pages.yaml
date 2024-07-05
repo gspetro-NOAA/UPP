@@ -21,7 +21,7 @@ jobs:
             ~/usr/local/bin/doxygen
           key: ${{ runner.os }}-doxygen-${{ hashFiles( '**/install_doxygen.sh' ) }}
       - name: Install Doxygen
-        if: steps.cache-doxygen.outputs.cache-hit != 'true'
+#if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: .github/scripts/install_doxygen.sh
       - name: Update code
         env: 
