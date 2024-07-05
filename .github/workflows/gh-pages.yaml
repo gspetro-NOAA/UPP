@@ -23,15 +23,14 @@ jobs:
       - name: Install Doxygen
         if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: $GITHUB_WORKSPACE/.github/scripts/install_doxygen.sh
-      - name: test
+      - name: Build docs
         run: |
+          export CC=mpicc
+          export FC=mpif90
           mkdir -p build && cd build
           cmake -DENABLE_DOCS=ON -DCMAKE_INSTALL_PREFIX=../install ..
           make -j2 VERBOSE=1
           make doc
-          
-#          echo 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
-#          cmake -DENABLE_DOCS=ON -DCMAKE_INSTALL_PREFIX=../install ..
 #      - name: Update code
 #        env: 
 #          - FIND: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
@@ -39,8 +38,8 @@ jobs:
 #        run: | 
 #          sed -i 's/$FIND/$REPLACE/g' CMakeLists.txt
 #          sed -i 's/make install/make doc/g' tests/compile_upp.sh
-      - name: Build docs
-        run: cd tests && ./compile_upp.sh
+#      - name: Build docs
+#        run: cd tests && ./compile_upp.sh
       - name: Upload docs
         uses: actions/upload-pages-artifact@v3
         with: 
