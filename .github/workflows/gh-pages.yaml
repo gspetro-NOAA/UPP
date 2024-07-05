@@ -27,13 +27,16 @@ jobs:
     needs: install-prerequisites
     steps: 
       - name: Build docs
-        run: |
-          export CC=mpicc
-          export FC=mpif90
-          mkdir -p build && cd build
-          cmake -DENABLE_DOCS=ON -DCMAKE_INSTALL_PREFIX=../install ..
-          make -j2 VERBOSE=1
-          make doc
+        uses: mattnotmitt/doxygen-action@v1.9.8
+        with:
+          doxyfile-path: 'doc/Doxyfile.in'
+#        run: | # Look into https://github.com/marketplace/actions/doxygen-action
+#          export CC=mpicc
+#          export FC=mpif90
+#          mkdir -p build && cd build
+#          cmake -DENABLE_DOCS=ON -DCMAKE_INSTALL_PREFIX=../install ..
+#          make -j2 VERBOSE=1
+#          make doc
 #      - name: Update code
 #        env: 
 #          - FIND: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
