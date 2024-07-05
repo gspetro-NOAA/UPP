@@ -6,6 +6,10 @@ on:
     - 'feature/automate-ghp'
     - 'feature/test-gh-actions'
   workflow_dispatch:
+env:
+  #CC: gcc-10
+  FC: gfortran-10
+  CXX: g++-10
 jobs:
   install-prerequisites:
     runs-on: ubuntu-latest
@@ -34,8 +38,8 @@ jobs:
 #        with:
 #          doxyfile-path: ./doc/Doxyfile.in
         run: | # Look into https://github.com/marketplace/actions/doxygen-action
-          export CC=mpicc
-          export FC=mpif90
+#          export CC=mpicc
+#          export FC=mpif90
           mkdir -p build && cd build
           cmake -DENABLE_DOCS=ON -DCMAKE_INSTALL_PREFIX=../install ..
           make -j1 VERBOSE=1
