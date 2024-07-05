@@ -1,11 +1,13 @@
 name: Merge Docs to gh-pages
-on: push
+on: [push, workflow_dispatch]
   branches:
     - 'develop' # Can I get it to push to develop only when the PR has a change in the `doc` directory?
+    - 'feature/automate-ghp'
     - 'feature/test-gh-actions'
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    id: build
     steps: 
       - name: Get Code
         uses: actions/checkout@v4
@@ -22,21 +24,21 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with: 
           path: tests/build/html
-  update-docs:
-    needs: build-docs
-    runs-on: ubuntu-latest
-    # Find out about permissions! 
-    permissions: 
-      pages: write
-      id-token: write 
+  #update-docs:
+  #  needs: build
+  #  runs-on: ubuntu-latest
+  #  # Find out about permissions! 
+  #  permissions: 
+  #    pages: write
+  #    id-token: write 
     #Find out about environment & outputs! 
-    environment: 
-      name: github-pages
-      url: ${{ steps.deployment.output.page_url }}
-    steps: 
-      - name: Deploy HTMLs
-        id: deployment
-        uses: actions/deploy-pages@v4
+  #  environment: 
+  #    name: github-pages
+  #    url: ${{ steps.deployment.output.page_url }}
+  #  steps: 
+  #    - name: Deploy HTMLs
+  #      id: deployment
+  #      uses: actions/deploy-pages@v4
         
 
           
