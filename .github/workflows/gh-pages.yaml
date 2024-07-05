@@ -23,10 +23,14 @@ jobs:
       - name: Install Doxygen
         if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: $GITHUB_WORKSPACE/.github/scripts/install_doxygen.sh
+      - name: test
+        run: echo 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
       - name: Update code
         env: 
-          - FIND: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
-          - REPLACE: 'option(ENABLE_DOCS \"Enable generation of doxygen-based documentation.\" ON)'
+          - FIND: ''
+          - REPLACE: ''
+#          - FIND: 'option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)'
+#          - REPLACE: 'option(ENABLE_DOCS \"Enable generation of doxygen-based documentation.\" ON)'
         run: | 
           sed -i 's/$FIND/$REPLACE/g' CMakeLists.txt
           sed -i 's/make install/make doc/g' tests/compile_upp.sh
