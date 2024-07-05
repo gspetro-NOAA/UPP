@@ -9,7 +9,6 @@ on:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-    id: build
     steps: 
       - name: Get Code
         uses: actions/checkout@v4
