@@ -30,7 +30,7 @@ jobs:
       - name: Build docs
         uses: mattnotmitt/doxygen-action@v1.9.8
         with:
-          doxyfile-path: $GITHUB_WORKSPACE/doc/Doxyfile.in
+          doxyfile-path: ./doc/Doxyfile.in
 #        run: | # Look into https://github.com/marketplace/actions/doxygen-action
 #          export CC=mpicc
 #          export FC=mpif90
