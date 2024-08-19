@@ -1,0 +1,17 @@
+name: GCC Linux Build
+on: 
+  - workflow_dispatch
+  - schedule: 
+    - cron: '30 3 * * *'
+
+jobs: 
+  copy-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy Issues
+        uses: soichisumi/issue-copy-action@v0.2.0
+        with:
+          #keyword: "/copy"
+          targetRepository: gspetro-NOAA/ufs
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          contentOfNewIssue: 'prefix of newly created issue'
