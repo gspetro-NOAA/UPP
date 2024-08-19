@@ -1,4 +1,4 @@
-name: GCC Linux Build
+name: Issue Copy
 on: 
   workflow_dispatch:
   schedule: 
