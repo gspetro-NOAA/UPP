@@ -1,11 +1,16 @@
 name: Issue Copy
 on: 
   workflow_dispatch:
+  issues:
+    types: [created, labeled]
   schedule: 
     - cron: '30 3 * * *'
 
 jobs: 
   copy-issues:
+    #env: 
+    #  LABEL_NAME: 'EPIC Support Requested'
+    #if: ${{ github.event.label.name == $LABEL_NAME }}
     runs-on: ubuntu-latest
     steps:
       - name: Copy Issues
