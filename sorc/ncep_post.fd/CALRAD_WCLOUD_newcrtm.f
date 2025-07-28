@@ -140,7 +140,6 @@
         'ssmis        ', &
         'ssmis        ', &
         'ssmis        ', &
-        'imgr_insat3d ', &
         'abi          ', &
         'abi          ', &
         'abi          ', &
@@ -312,9 +311,8 @@
        .or. iget(846) > 0 .or. iget(847) > 0 .or. iget(848) > 0  &
        .or. iget(849) > 0 .or. iget(850) > 0 .or. iget(851) > 0  &
        .or. iget(852) > 0 .or. iget(856) > 0 .or. iget(857) > 0  &
-       .or. iget(861) > 0  &
-       .or. iget(862) > 0 .or. iget(863) > 0 &
-       .or. iget(865) > 0 .or. iget(866) > 0 .or. iget(867) > 0  &
+       .or. iget(861) > 0 .or. iget(862) > 0 .or. iget(863) > 0  &
+       .or. iget(866) > 0 .or. iget(867) > 0  &
        .or. iget(868) > 0 .or. iget(869) > 0 .or. iget(870) > 0  &
        .or. iget(871) > 0 .or. iget(872) > 0 .or. iget(873) > 0  &
        .or. iget(874) > 0 .or. iget(875) > 0 &
@@ -498,10 +496,6 @@
      if(iget(846)>0)then
      call select_channels_L(channelinfo(14),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(846)),iget(846))
      endif
-     ! INSAT 3D (Kalpana)
-     if(iget(865)>0)then
-     call select_channels_L(channelinfo(18),4,(/ 1,2,3,4 /),lvls(1:4,iget(865)),iget(865))
-     endif
 
      ! Loop over data types to process    
      sensordo: do isat=1,n_sensors
@@ -524,7 +518,6 @@
              (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
              (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
              (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
-             (isis=='imgr_insat3d' .and. iget(865)>0) .OR. &
              (isis=='imgr_g13' .and. iget(868)>0) .OR. &
              (isis=='imgr_g15' .and. iget(872)>0) .OR. &
              (isis=='abi_g16'  .and. post_abig16) .OR. &
@@ -553,7 +546,6 @@
            hsb        = obstype == 'hsb'
            goes_img   = obstype == 'goes_img'
            abi        = obstype == 'abi'
-           insat3d    = obstype == 'imgr_insat3d'
            avhrr      = obstype == 'avhrr'
            avhrr_navy = obstype == 'avhrr_navy'
            ssmi       = obstype == 'ssmi'
@@ -1194,7 +1186,6 @@
                         (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
                         (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
                         (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
-                        (isis=='imgr_insat3d' .and. iget(865)>0) .OR. &
                         (isis=='imgr_g13' .and. iget(868)>0) .OR. &
                         (isis=='imgr_g15' .and. iget(872)>0) .OR. &
                         (isis=='abi_g16'  .and. post_abig16) .OR. &
@@ -1234,9 +1225,6 @@
                     else if(isis=='abi_g18')then
                        sublat=0.0
                        sublon=-137.2
-                    else if(isis=='imgr_insat3d') then
-                       sublat=0.0
-                       sublon=74.0
                     else if(isis=='ahi_himawari8') then
                        sublat=0.0
                        sublon=140.7
@@ -1846,25 +1834,6 @@
                 endif
               enddo
               end if  ! end of outputting ssmis f20
-              if_insat3d: if(isis=='imgr_insat3d') then ! writing MTSAT-1r to grib
-                 nc=0
-                 do ichan=1,4
-                    igot=iget(865) 
-                      if(lvls(ichan,igot)==1)then
-                       nc=nc+1
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j)=tb(i,j,nc)
-                          enddo
-                       enddo
-                       if(grib=="grib2" )then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                       endif
-                    endif
-                 enddo
-              endif if_insat3d
               if (isis=='imgr_g13')then  ! writing goes 13 to grib
                  nc=0
                  do ixchan=1,4
