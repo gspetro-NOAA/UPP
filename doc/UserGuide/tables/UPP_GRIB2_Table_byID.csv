@@ -322,10 +322,6 @@ Relative humidity on sigma level 0.9950,RH_ON_SIGMA_LVL_0.9950,RH,323
 U-wind at sigma level 0.9950,UGRD_ON_SIGMA_LVL_0.9950,UGRD,324
 V-wind at sigma level 0.9950,VGRD_ON_SIGMA_LVL_0.9950,VGRD,325
 Omega at sigma level 0.9950,VVEL_ON_SIGMA_LVL_0.9950,VVEL,326
-Simulated GOES 12 channel 2 brightness temperature,SBT122_ON_TOP_OF_ATMOS,SBT122,327
-Simulated GOES 12 channel 3 brightness temperature,SBT123_ON_TOP_OF_ATMOS,SBT123,328
-Simulated GOES 12 channel 4 brightness temperature,SBT124_ON_TOP_OF_ATMOS,SBT124,329
-Simulated GOES 12 channel 5 brightness temperature,SBT126_ON_TOP_OF_ATMOS,SBT126,330
 Cloud fraction on pressure surface,TCDC_ON_ISOBARIC_SFC,TCDC,331
 U-wind on theta surface,UGRD_ON_ISENTROPIC_LVL,UGRD,332
 V-wind on theta surface,VGRD_ON_ISENTROPIC_LVL,VGRD,333
@@ -439,24 +435,12 @@ Dust 5 on pressure surface,DUST5_ON_ISOBARIC_LVL,MASSMR,442
 Equilibrium level height,HGT_ON_EQUIL_LVL,HGT,443
 Lightning,LTNG_ON_SURFACE,LTNG,444
 MAPS Sea Level Pressure,MAPS_PRMSL_ON_MEAN_SEA_LVL,PRMSL,445
-GOES west channel 2 brightness temperature,SBT112_ON_TOP_OF_ATMOS,SBT112,446
-GOES west channel 3 brightness temperature,SBT113_ON_TOP_OF_ATMOS,SBT113,447
-GOES west channel 4 brightness temperature,SBT114_ON_TOP_OF_ATMOS,SBT114,448
-GOES west channel 5 brightness temperature,SBT115_ON_TOP_OF_ATMOS,SBT115,449
 In flight icing from NCAR algorithm,ICIP_ON_ISOBARIC_SFC,ICIP,450
 Specific humidity at flight levels,SPFH_ON_SPEC_ALT_ABOVE_MEAN_SEA_LVL,SPFH,451
 Virtual temperature based convective available potential energy (CAPE),VTCAPE_ON_SURFACE,CAPE,452
 Virtual temperature based convective inhibition (CIN),VTCIN_ON_SURFACE,CIN,453
 Ventilation rate,VRATE_ON_PLANETARY_BOUND_LYR,VRATE,454
 Haines index,HINDEX_ON_SURFACE,HINDEX,455
-Simulated GOES 12 channel 2 brightness temperature with satellite angle correction,NON_NADIR_SBT122_ON_TOP_OF_ATMOS,SBT122,456
-Simulated GOES 12 channel 3 brightness temperature with satellite angle correction,NON_NADIR_SBT123_ON_TOP_OF_ATMOS,SBT123,457
-Simulated GOES 12 channel 4 brightness temperature with satellite angle correction,NON_NADIR_SBT124_ON_TOP_OF_ATMOS,SBT124,458
-Simulated GOES 12 channel 5 brightness temperature with satellite angle correction,NON_NADIR_SBT126_ON_TOP_OF_ATMOS,SBT126,459
-Simulated GOES 11 channel 2 brightness temperature with satellite angle correction,SBT112_ON_TOP_OF_ATMOS,SBT112,460
-Simulated GOES 11 channel 3 brightness temperature with satellite angle correction,SBT113_ON_TOP_OF_ATMOS,SBT113,461
-Simulated GOES 11 channel 4 brightness temperature with satellite angle correction,SBT114_ON_TOP_OF_ATMOS,SBT114,462
-Simulated GOES 11 channel 5 brightness temperature with satellite angle correction,SBT115_ON_TOP_OF_ATMOS,SBT115,463
 GTG eddy dissipation parameter (EDR) on pressure surface,EDPARM_ON_ISOBARIC_SFC,EDPARM,464
 GTG clean air turbulence (CAT) on pressure surface,CAT_ON_ISOBARIC_SFC,CATEDR,465
 GTG mountain wave turbulence (MWT) on pressure surface,MWTURB_ON_ISOBARIC_SFC,MWTURB,466

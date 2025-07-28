@@ -288,12 +288,7 @@
 
   !     DO NOT FORGET TO ADD YOUR NEW IGET HERE (IF YOU'VE ADDED ONE)      
   !     START SUBROUTINE CALRAD.
-  ifactive: if (iget(327) > 0 .or. iget(328) > 0 .or. iget(329) > 0       &
-       .or. iget(330) > 0 .or. iget(446) > 0 .or. iget(447) > 0  & 
-       .or. iget(448) > 0 .or. iget(449) > 0 .or. iget(456) > 0  &
-       .or. iget(457) > 0 .or. iget(458) > 0 .or. iget(459) > 0  &
-       .or. iget(460) > 0 .or. iget(461) > 0 .or. iget(462) > 0  &
-       .or. iget(463) > 0 .or. iget(483) > 0 .or. iget(484) > 0  &
+  ifactive: if (iget(483) > 0 .or. iget(484) > 0  &
        .or. iget(485) > 0 .or. iget(486) > 0 .or. iget(488) > 0  &
        .or. iget(489) > 0 .or. iget(490) > 0 .or. iget(491) > 0  &
        .or. iget(492) > 0 .or. iget(493) > 0 .or. iget(494) > 0  &
@@ -517,12 +512,6 @@
         isis=trim(sensorlist(isat))
 
         sensor_avail: if( &
-             (isis=='imgr_g12' .and. (iget(327) > 0 .or. iget(328) > 0 &
-             .or. iget(329) > 0 .or. iget(330) > 0 .or. iget(456) > 0   &
-             .or. iget(457) > 0 .or. iget(458) > 0 .or. iget(459) > 0 )) .OR. &
-             (isis=='imgr_g11' .and. (iget(446) > 0 .or. iget(447) > 0 &
-             .or. iget(448) > 0 .or. iget(449) > 0 .or. iget(460) > 0   &
-             .or. iget(461) > 0 .or. iget(462) > 0 .or. iget(463) > 0)) .OR. &
              (isis=='amsre_aqua' .and. (iget(483) > 0 .or. iget(484) > 0  &
              .or. iget(485) > 0 .or. iget(486) > 0)) .OR. &
              (isis=='tmi_trmm' .and. (iget(488) > 0 .or. iget(489) > 0  &
@@ -695,11 +684,7 @@
            surface(1)%sensordata%sensor_channel = channelinfo(sensorindex)%sensor_channel
 
            ! run crtm for nadir instruments / channels
-           nadir: if ( (isis=='imgr_g12' .and. (iget(327)>0 .or. &
-                       iget(328)>0 .or. iget(329)>0 .or. iget(330)>0)) .or. &
-                       (isis=='imgr_g11' .and. (iget(446)>0 .or. &
-                       iget(447)>0 .or. iget(448)>0 .or. iget(449)>0)) .or. &
-                       (isis=='amsre_aqua' .and. (iget(483) > 0 .or. iget(484) > 0  &
+           nadir: if ( (isis=='amsre_aqua' .and. (iget(483) > 0 .or. iget(484) > 0  &
                        .or. iget(485) > 0 .or. iget(486) > 0)) .OR. &
                        (isis=='tmi_trmm' .and. (iget(488) > 0 .or. iget(489) > 0  &
                        .or. iget(490) > 0 .or. iget(491) > 0)) .OR. &
@@ -1176,43 +1161,6 @@
                  enddo
               end if  ! end of outputting trmm
 
-              if (isis=='imgr_g11')then  ! writing goes 11 to grib
-                 do ixchan=1,4
-                    ichan=ixchan
-                    igot=445+ixchan
-                    if(igot>0) then
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j) = tb(i,j,ichan)
-                          enddo
-                       enddo
-                       if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                       endif
-                    endif ! IGOT
-                 enddo
-              end if  ! end of outputting goes 11
-
-              if (isis=='imgr_g12')then  ! writing goes 12 to grib
-                 do ixchan=1,4   ! write brightness temperatures
-                    ichan=ixchan
-                    igot=iget(326+ixchan)
-                    if(igot>0) then
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j)=tb(i,j,ichan)
-                           enddo
-                        enddo
-                        if (grib=="grib2") then
-                           cfld=cfld+1
-                           fld_info(cfld)%ifld=IAVBLFLD(igot)
-                           datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                        endif
-                    endif
-                 enddo
-               endif ! end of outputting goes 12
               if (isis=='abi_gr')then  ! writing goes-r nadir to grib2
                  nc=0
                  do ixchan=1,10
@@ -1252,11 +1200,7 @@
                         (isis=='abi_g16'  .and. post_abig16) .OR. &
                         (isis=='abi_g17'  .and. post_abig17) .OR. &
                         (isis=='abi_g18'  .and. post_abig18) .OR. &
-                        (isis=='ahi_himawari8' .and. post_ahi8) .OR. &
-                        (isis=='imgr_g12' .and. (iget(456)>0 .or. &
-                        iget(457)>0 .or. iget(458)>0 .or. iget(459)>0)) .or. &
-                        (isis=='imgr_g11' .and. (iget(460)>0 .or. &
-                        iget(461)>0 .or. iget(462)>0 .or. iget(463)>0)))then
+                        (isis=='ahi_himawari8' .and. post_ahi8) then
 
               do j=jsta,jend
                  loopi2:do i=ista,iend
@@ -1275,10 +1219,7 @@
                     !    Load geometry structure
                     !    geometryinfo(1)%sensor_zenith_angle = zasat*rtd  ! local zenith angle ???????
                     ! compute satellite zenith angle
-                    if(isis=='imgr_g12')then
-                       sublat=0.0
-                       sublon=-75.0
-                    else if(isis=='imgr_g13')then
+                    if(isis=='imgr_g13')then
                        sublat=0.0
                        sublon=-75.0
                     else if(isis=='imgr_g15')then
@@ -1293,9 +1234,6 @@
                     else if(isis=='abi_g18')then
                        sublat=0.0
                        sublon=-137.2
-                    else if(isis=='imgr_g11')then
-                       sublat=0.0
-                       sublon=-135.0
                     else if(isis=='imgr_insat3d') then
                        sublat=0.0
                        sublon=74.0
@@ -1927,42 +1865,6 @@
                     endif
                  enddo
               endif if_insat3d
-              if (isis=='imgr_g11')then  ! writing goes 11 to grib
-                 do ixchan=1,4
-                    ichan=ixchan
-                    igot=iget(459+ixchan)
-                    if(igot>0) then
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j)=tb(i,j,ichan)
-                          enddo
-                       enddo
-                       if(grib=="grib2" )then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                       endif
-                    endif
-                enddo
-              endif ! end of outputting goes 11
-              if (isis=='imgr_g12')then  ! writing goes 12 to grib
-                 do ixchan=1,4
-                    ichan=ixchan
-                    igot=iget(455+ixchan)
-                    if(igot>0) then
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j)=tb(i,j,ichan)
-                          enddo
-                       enddo
-                       if(grib=="grib2" )then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                       endif
-                    endif
-                 enddo
-              end if  ! end of outputting goes 12
               if (isis=='imgr_g13')then  ! writing goes 13 to grib
                  nc=0
                  do ixchan=1,4
