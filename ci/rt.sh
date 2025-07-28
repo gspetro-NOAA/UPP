@@ -216,11 +216,11 @@ fi
 
 if [[ "$compiler" == MISSING ]] ; then
    if [[ "$machine" == "URSA" ]]; then
-	usage FATAL ERROR: You must specify the compiler on Ursa: -C 'intel|intelllvm' 1>&2
-	exit 2
-    else
-	compiler=intel
-    fi
+	   usage FATAL ERROR: You must specify the compiler on Ursa: -C 'intel|intelllvm' 1>&2
+	   exit 2
+   else
+	   compiler=intel
+   fi
 fi
 
 export compiler
@@ -269,9 +269,9 @@ if [ "$build_exe" == "yes" ]; then
       status=$?
     fi
     if [ "$status" -eq 0 ]; then
-      msg="Building UPP+IFI executables successfully"
+      msg="Built UPP+IFI executables successfully"
     else
-      msg="Building UPP+IFI executables with failure"
+      msg="Built UPP+IFI executables with failure"
       postmsg "$logfile" "$msg"
       exit 2
     fi
