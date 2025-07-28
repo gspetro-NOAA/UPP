@@ -1,0 +1,23 @@
+machine:
+  ursa: 
+    nodes: 4
+    ntaskspernode: 12 
+    queue: batch
+    account: epic
+    tasks: 
+      rap:
+  hercules: 
+    nodes: 2
+    ntaskspernode: 24 
+    queue: batch
+    account: epic
+    tasks: 
+      rap:
+  orion: 
+    nodes: 2
+    ntaskspernode: 24 
+    queue: batch
+    account: epic
+    tasks: 
+      rap:
+
