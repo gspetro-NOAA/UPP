@@ -118,24 +118,8 @@
   ! Add your sensors here
   integer(i_kind),parameter:: n_sensors=23
   character(len=20),parameter,dimension(1:n_sensors):: sensorlist= &
-      (/'imgr_g15            ', &
-        'imgr_g13            ', &
-        'imgr_g12            ', &
-        'imgr_g11            ', &
-        'amsre_aqua          ', &
+      (/'amsre_aqua          ', &
         'tmi_trmm            ', &
-        'ssmi_f13            ', &
-        'ssmi_f14            ', &
-        'ssmi_f15            ', &
-        'ssmis_f16           ', &
-        'ssmis_f17           ', &
-        'ssmis_f18           ', &
-        'ssmis_f19           ', &
-        'ssmis_f20           ', &
-        'seviri_m10          ', &
-        'imgr_mt2            ', &
-        'imgr_mt1r           ', &
-        'imgr_insat3d        ', &
         'abi_gr              ', &
         'abi_g16             ', &
         'abi_g17             ', &
@@ -156,7 +140,6 @@
         'ssmis        ', &
         'ssmis        ', &
         'ssmis        ', &
-        'seviri       ', &
         'imgr_mt2     ', &
         'imgr_mt1r    ', &
         'imgr_insat3d ', &
@@ -200,7 +183,7 @@
   character(20)::isis_local
 
   logical hirs2,msu,goessndr,hirs3,hirs4,hirs,amsua,amsub,airs,hsb  &
-            ,goes_img,abi,seviri, mhs,insat3d
+            ,goes_img,abi,mhs,insat3d
   logical avhrr,avhrr_navy,lextra,ssu
   logical ssmi,ssmis,amsre,amsre_low,amsre_mid,amsre_hig,change
   logical ssmis_las,ssmis_uas,ssmis_env,ssmis_img
@@ -522,10 +505,6 @@
      if(iget(846)>0)then
      call select_channels_L(channelinfo(14),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(846)),iget(846))
      endif
-     ! SEVIRI
-     if(iget(876)>0)then
-     call select_channels_L(channelinfo(15),8,(/ 1,2,3,4,5,6,7,8 /),lvls(1:8,iget(876)),iget(876))
-     endif
      ! MT2
      if(iget(860)>0)then
      call select_channels_L(channelinfo(16),4,(/ 1,2,3,4 /),lvls(1:4,iget(860)),iget(860))
@@ -575,7 +554,6 @@
              (isis=='abi_g17'  .and. post_abig17) .OR. &
              (isis=='abi_g18'  .and. post_abig18) .OR. &
              (isis=='abi_gr'   .and. post_abigr) .OR. &
-             (isis=='seviri_m10' .and. iget(876)>0) .OR. &
              (isis=='ahi_himawari8' .and. post_ahi8) )then
            if(me==0)print*,'obstype, isis= ',obstype,isis
            !       isis='amsua_n15'
@@ -598,7 +576,6 @@
            hsb        = obstype == 'hsb'
            goes_img   = obstype == 'goes_img'
            abi        = obstype == 'abi'
-           seviri     = obstype == 'seviri'
            insat3d    = obstype == 'imgr_insat3d'
            avhrr      = obstype == 'avhrr'
            avhrr_navy = obstype == 'avhrr_navy'
@@ -1289,7 +1266,6 @@
                         (isis=='abi_g16'  .and. post_abig16) .OR. &
                         (isis=='abi_g17'  .and. post_abig17) .OR. &
                         (isis=='abi_g18'  .and. post_abig18) .OR. &
-                        (isis=='seviri_m10' .and. iget(876)>0) .OR. &
                         (isis=='ahi_himawari8' .and. post_ahi8) .OR. &
                         (isis=='imgr_g12' .and. (iget(456)>0 .or. &
                         iget(457)>0 .or. iget(458)>0 .or. iget(459)>0)) .or. &
@@ -1316,9 +1292,6 @@
                     if(isis=='imgr_g12')then
                        sublat=0.0
                        sublon=-75.0
-                    else if(isis=='seviri_m10')then
-                       sublat=0.0
-                       sublon=0.0
                     else if(isis=='imgr_g13')then
                        sublat=0.0
                        sublon=-75.0
@@ -2048,28 +2021,6 @@
                     endif
                  enddo
               end if  ! end of outputting goes 12
-              if (isis=='seviri_m10')then  ! writing msg/severi 10
-                 nc=0
-                 do ixchan=1,8
-                   ichan=ixchan
-                   igot=iget(876)
-                   if(igot>0) then
-                   if(lvls(ixchan,igot)==1)then
-                    nc=nc+1
-                    do j=jsta,jend
-                     do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                     enddo
-                    enddo
-                    if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                    endif
-                   endif
-                   endif
-                 enddo
-              end if  ! end of outputting msg/seviri 10
               if (isis=='imgr_g13')then  ! writing goes 13 to grib
                  nc=0
                  do ixchan=1,4
