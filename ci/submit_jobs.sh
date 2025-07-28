@@ -6,6 +6,14 @@
 
 export jobid_list=""
 
+cd $svndir/ci/jobs-dev
+test=rap
+uw template render --input-file run_post_${test}_template.sh --values-file machine.yaml --output-file run_post_${test}_${machine}.sh --dry-run
+#for test in ${test_list}
+#do
+#   uw template render --input-file run_post_${test}_template.sh --values-file machine.yaml --output-file run_post_${test}_${machine}.sh --dry-run
+#done
+
 cd $workdir
 for test in ${test_list}
 do
