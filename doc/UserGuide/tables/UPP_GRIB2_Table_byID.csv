@@ -739,7 +739,6 @@ Shelter level apparent temperature,APTMP_ON_SPEC_HGT_LVL_ABOVE_GRND_2m,APTMP,808
 Simulated Brightness Temperature (K) for SSMIS-F17 Channel 12,SSMS1712_ON_TOP_OF_ATMOS,SSMS1712,829
 Simulated Brightness Temperature (K) for SSMIS-F17 Channel 13,SSMS1713_ON_TOP_OF_ATMOS,SSMS1713,830
 Simulated GOES 13 channel 2 brightness temperature with satellite angle correction,Not currently available for grib2,NA,868
-Simulated GOES 15 channel 5 brightness temperature with satellite angle correction,Not currently available for grib2,NA,872
 Hourly max relative vorticity on hybrid level 1,GSD_MAX_REL_VORT_ON_SPEC_HGT_LVL_HYBRID1,RELV,890
 Virtual temperature on model surfaces,VTMP_ON_HYBRID_LVL,VTMP,909
 Virtual temperature on pressure surfaces,VTMP_ON_ISOBARIC_SFC,VTMP,910

@@ -314,7 +314,7 @@
        .or. iget(861) > 0 .or. iget(862) > 0 .or. iget(863) > 0  &
        .or. iget(866) > 0 .or. iget(867) > 0  &
        .or. iget(868) > 0 .or. iget(869) > 0 .or. iget(870) > 0  &
-       .or. iget(871) > 0 .or. iget(872) > 0 .or. iget(873) > 0  &
+       .or. iget(871) > 0 .or. iget(873) > 0  &
        .or. iget(874) > 0 .or. iget(875) > 0 &
        .or. iget(877) > 0 .or. iget(878) > 0 .or. iget(879) > 0  &
        .or. iget(880) > 0 .or. iget(881) > 0 .or. iget(882) > 0  &
@@ -378,10 +378,6 @@
      ! GOES-13
      if(iget(868)>0)then
      call select_channels_L(channelinfo(2),4,(/ 1,2,3,4 /),lvls(1:4,iget(868)),iget(868))
-     endif
-     ! GOES-15
-     if(iget(872)>0)then
-     call select_channels_L(channelinfo(1),4,(/ 1,2,3,4 /),lvls(1:4,iget(872)),iget(872))
      endif
      ! GOES-16 
      if(post_abig16)then
@@ -519,7 +515,6 @@
              (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
              (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
              (isis=='imgr_g13' .and. iget(868)>0) .OR. &
-             (isis=='imgr_g15' .and. iget(872)>0) .OR. &
              (isis=='abi_g16'  .and. post_abig16) .OR. &
              (isis=='abi_g17'  .and. post_abig17) .OR. &
              (isis=='abi_g18'  .and. post_abig18) .OR. &
@@ -1187,7 +1182,6 @@
                         (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
                         (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
                         (isis=='imgr_g13' .and. iget(868)>0) .OR. &
-                        (isis=='imgr_g15' .and. iget(872)>0) .OR. &
                         (isis=='abi_g16'  .and. post_abig16) .OR. &
                         (isis=='abi_g17'  .and. post_abig17) .OR. &
                         (isis=='abi_g18'  .and. post_abig18) .OR. &
@@ -1213,9 +1207,6 @@
                     if(isis=='imgr_g13')then
                        sublat=0.0
                        sublon=-75.0
-                    else if(isis=='imgr_g15')then
-                       sublat=0.0
-                       sublon=-135.0
                     else if(isis=='abi_g16')then  ! positions should be controlled by runtime setting or fix file
                        sublat=0.0
                        sublon=-75.2
@@ -1856,28 +1847,6 @@
                    endif
                  enddo
               end if  ! end of outputting goes 13
-              if (isis=='imgr_g15')then  ! writing goes 15 to grib
-                 nc=0
-                 do ixchan=1,4
-                   ichan=ixchan
-                   igot=iget(872)
-                   if(igot>0) then
-                   if(lvls(ixchan,igot)==1)then
-                    nc=nc+1
-                    do j=jsta,jend
-                     do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                     enddo
-                    enddo
-                    if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                    endif
-                   endif
-                   endif
-                 enddo
-              end if  ! end of outputting goes 15
               if (isis=='abi_g16')then  ! writing goes 16 to grib
                  nc=0
                  do ixchan=1,10
