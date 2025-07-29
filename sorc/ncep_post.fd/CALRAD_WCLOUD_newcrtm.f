@@ -280,10 +280,6 @@
   do n = 969, 969+9  ! 969 set in RQSTFLD.f
     if (iget(n) > 0) post_ahi8=.true.
   enddo
-  post_ssmis17=.false.
-  do n = 825, 825+3  ! 825 set in RQSTFLD.f
-    if (iget(n) > 0) post_ssmis17=.true.
-  enddo
 
   !     DO NOT FORGET TO ADD YOUR NEW IGET HERE (IF YOU'VE ADDED ONE)      
   !     START SUBROUTINE CALRAD.
@@ -292,23 +288,23 @@
        .or. iget(489) > 0 .or. iget(490) > 0 .or. iget(491) > 0  &
        .or. iget(492) > 0 .or. iget(493) > 0 .or. iget(494) > 0  &
        .or. iget(495) > 0 .or. iget(496) > 0 .or. iget(497) > 0  &
-       .or. iget(498) > 0 .or. iget(499) > 0 .or. iget(800) > 0  &
+       .or. iget(498) > 0 .or. iget(499) > 0 &
        .or. iget(801) > 0 .or. iget(802) > 0 .or. iget(803) > 0  &
-       .or. iget(804) > 0 .or. iget(805) > 0 .or. iget(806) > 0  &
+       .or. iget(804) > 0 .or. iget(805) > 0 &
        .or. iget(807) > 0 .or. iget(809) > 0                     &
-       .or. iget(810) > 0 .or. iget(811) > 0 .or. iget(812) > 0  &
+       .or. iget(810) > 0 .or. iget(811) > 0 &
        .or. iget(813) > 0 .or. iget(814) > 0 .or. iget(815) > 0  &
-       .or. iget(816) > 0 .or. iget(817) > 0 .or. iget(818) > 0  &
+       .or. iget(816) > 0 .or. iget(817) > 0 &
        .or. iget(819) > 0 .or. iget(820) > 0 .or. iget(821) > 0  &
        .or. iget(822) > 0 .or. iget(823) > 0 .or. iget(824) > 0  &
-       .or. iget(825) > 0 .or. iget(826) > 0 .or. iget(827) > 0  &
+       .or. iget(826) > 0 .or. iget(827) > 0  &
        .or. iget(828) > 0 .or. iget(829) > 0 .or. iget(830) > 0  &
-       .or. iget(831) > 0 .or. iget(832) > 0 .or. iget(833) > 0  &
+       .or. iget(831) > 0 .or. iget(833) > 0  &
        .or. iget(834) > 0 .or. iget(835) > 0 .or. iget(836) > 0  &
-       .or. iget(837) > 0 .or. iget(838) > 0 .or. iget(839) > 0  &
+       .or. iget(837) > 0 .or. iget(838) > 0 &
        .or. iget(840) > 0 .or. iget(841) > 0 .or. iget(842) > 0  &
        .or. iget(843) > 0 .or. iget(844) > 0 .or. iget(845) > 0  &
-       .or. iget(846) > 0 .or. iget(847) > 0 .or. iget(848) > 0  &
+       .or. iget(847) > 0 .or. iget(848) > 0  &
        .or. iget(849) > 0 .or. iget(850) > 0 .or. iget(851) > 0  &
        .or. iget(852) > 0 .or. iget(856) > 0 .or. iget(857) > 0  &
        .or. iget(861) > 0 .or. iget(862) > 0 .or. iget(863) > 0  &
@@ -446,49 +442,7 @@
          enddo
        endif
      endif
-    
-     ! SSMIS F17 (37H, 37V, 91H, 91V)
-     if(post_ssmis17)then
-       nchanl=14
-       do n = 825, 825+3  ! 825 set in RQSTFLD.f
-         if (iget(n) > 0) then
-           nchanl = nchanl+1
-         endif
-       enddo
-       if (nchanl > 14 .and. nchanl < 19) then
-         do n = 825, 825+3  ! 825 set in RQSTFLD.f
-           if (iget(n) == 0) channelinfo(11)%Process_Channel(n-825+15)=.False.  !  turn off channel processing
-         enddo
-       endif
-     endif
-
-     ! SSMI, F13-F15 (19H,19V,??H,37H,37V,85H,85V)
-     if(iget(800)>0)then
-     call select_channels_L(channelinfo(7),7,(/ 1,2,3,4,5,6,7 /),lvls(1:7,iget(800)),iget(800))
-     endif
-     if(iget(806)>0)then
-     call select_channels_L(channelinfo(8),7,(/ 1,2,3,4,5,6,7 /),lvls(1:7,iget(806)),iget(806))
-     endif
-     if(iget(812)>0)then
-     call select_channels_L(channelinfo(9),7,(/ 1,2,3,4,5,6,7 /),lvls(1:7,iget(812)),iget(812))
-     endif
-     ! SSMIS, F16-F20 (183H,19H,19V,37H,37V,91H,91V)
-     if(iget(818)>0)then
-     call select_channels_L(channelinfo(10),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(818)),iget(818))
-     endif
-!     if(iget(825)>0)then
-!     call select_channels_L(channelinfo(11),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(825)),iget(825))
-!     endif
-     if(iget(832)>0)then
-     call select_channels_L(channelinfo(12),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(832)),iget(832))
-     endif
-     if(iget(839)>0)then
-     call select_channels_L(channelinfo(13),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(839)),iget(839))
-     endif
-     if(iget(846)>0)then
-     call select_channels_L(channelinfo(14),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(846)),iget(846))
-     endif
-
+     
      ! Loop over data types to process    
      sensordo: do isat=1,n_sensors
 
@@ -502,14 +456,6 @@
              .or. iget(485) > 0 .or. iget(486) > 0)) .OR. &
              (isis=='tmi_trmm' .and. (iget(488) > 0 .or. iget(489) > 0  &
              .or. iget(490) > 0 .or. iget(491) > 0)) .OR. &
-             (isis=='ssmi_f13' .and. iget(800) > 0 ) .OR. &
-             (isis=='ssmi_f14' .and. iget(806) > 0 ) .OR. &
-             (isis=='ssmi_f15' .and. iget(812) > 0 ) .OR. &
-             (isis=='ssmis_f16' .and. iget(818) > 0) .OR. &
-             (isis=='ssmis_f17' .and. post_ssmis17) .OR. &
-             (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
-             (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
-             (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
              (isis=='abi_g16'  .and. post_abig16) .OR. &
              (isis=='abi_g17'  .and. post_abig17) .OR. &
              (isis=='abi_g18'  .and. post_abig18) .OR. &
@@ -1168,18 +1114,10 @@
 
            ! run crtm for non-nadir instruments / channels 
 
-           nonnadir: if((isis=='ssmi_f13' .and. iget(800) > 0 ) .OR. &
-                        (isis=='ssmi_f14' .and. iget(806) > 0 ) .OR. &
-                        (isis=='ssmi_f15' .and. iget(812) > 0 ) .OR. &
-                        (isis=='ssmis_f16' .and. iget(818) > 0) .OR. &
-                        (isis=='ssmis_f17' .and. post_ssmis17) .OR. &
-                        (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
-                        (isis=='ssmis_f19' .and. iget(839) > 0) .OR. &
-                        (isis=='ssmis_f20' .and. iget(846) > 0) .OR. &
-                        (isis=='abi_g16'  .and. post_abig16) .OR. &
+           nonnadir: if((isis=='abi_g16'  .and. post_abig16) .OR. &
                         (isis=='abi_g17'  .and. post_abig17) .OR. &
                         (isis=='abi_g18'  .and. post_abig18) .OR. &
-                        (isis=='ahi_himawari8' .and. post_ahi8) then
+                        (isis=='ahi_himawari8' .and. post_ahi8)) then
 
               do j=jsta,jend
                  loopi2:do i=ista,iend
@@ -1212,17 +1150,10 @@
                        sublon=140.7
                     end if
 
-!                   use zenith angle = 53.1 for SSMI and SSMIS:
-                    if(isis=='ssmis_f16'.or.isis=='ssmis_f17'.or.isis=='ssmis_f18'.or. &
-                       isis=='ssmis_f19'.or.isis=='ssmis_f20'.or.isis=='ssmi_f13'.or. &
-                       isis=='ssmi_f14'.or.isis=='ssmi_f15')then
-                       sat_zenith=53.1
-                    else
-                       ! For other imagers (GOES-11 and 12), calculate based on satellite location:
-                       call GEO_ZENITH_ANGLE(i,j,gdlat(i,j),gdlon(i,j)  &
+!                   Calculate based on satellite location:
+                    call GEO_ZENITH_ANGLE(i,j,gdlat(i,j),gdlon(i,j)  &
                             ,sublat,sublon,sat_zenith)
-                    endif
-
+                    
                     geometryinfo(1)%sensor_zenith_angle=sat_zenith
 	            geometryinfo(1)%sensor_scan_angle=sat_zenith
 
@@ -1626,196 +1557,6 @@
                !      if (error_status /= success) &
                !     &   print*,'ERROR*** crtm_destroy error_status=',error_status
 
-              if (isis=='ssmi_f13')then  ! writing ssmi to grib (37 & 85 GHz)
-              nc=0
-              do ixchan=1,7
-                ichan=ixchan
-                igot=iget(800)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmi f13
-              if (isis=='ssmi_f14')then  ! writing ssmi to grib (19,37 & 85 GHz)
-              nc=0
-              do ixchan=1,7
-                ichan=ixchan
-                igot=iget(806)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmi f14
-              if (isis=='ssmi_f15')then  ! writing ssmi to grib (19,37 & 85 GHz)
-              nc=0
-              do ixchan=1,7
-                ichan=ixchan
-                igot=iget(812)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmi f15
-              if (isis=='ssmis_f16')then  ! writing ssmis to grib (183,19,37 & 85GHz)
-              nc=0
-              do ixchan=1,24
-                ichan=ixchan
-                igot=iget(818)
-                if(igot>0) then
-                print*,'ixchan,lvls=',ixchan,lvls(ixchan,igot)
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmis f16
-              if(isis=='ssmis_f17') then ! writing ssmis f17 to grib (37, 91GHz)
-                 do ixchan=1,4
-                    ichan=14+ixchan
-                    igot=iget(824+ixchan)
-                      if(igot>0)then
-                       do j=jsta,jend
-                          do i=ista,iend
-                             grid1(i,j)=tb(i,j,ichan)
-                          enddo
-                       enddo
-                       if(grib=="grib2" )then
-                        cfld=cfld+1
-                        fld_info(cfld)%ifld=IAVBLFLD(igot)
-                        datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                       endif
-                    endif
-                 enddo
-                 do ixchan=1,2
-                  ichan=11+ixchan
-                  igot=iget(828+ixchan)
-                    if(igot>0)then
-                     do j=jsta,jend
-                        do i=ista,iend
-                           grid1(i,j)=tb(i,j,ichan)
-                        enddo
-                     enddo
-                     if(grib=="grib2" )then
-                      cfld=cfld+1
-                      fld_info(cfld)%ifld=IAVBLFLD(igot)
-                      datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                     endif
-                  endif
-               enddo
-                                
-              endif ! end of outputting ssmis f17
-              if (isis=='ssmis_f18')then  ! writing ssmis to grib (183,19,37 &85GHz)
-              nc=0
-              do ixchan=1,24
-                ichan=ixchan
-                igot=iget(832)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmis f18
-              if (isis=='ssmis_f19')then  ! writing ssmis to grib (183,19,37 &85GHz)
-              nc=0
-              do ixchan=1,24
-                ichan=ixchan
-                igot=iget(839)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmis f19
-              if (isis=='ssmis_f20')then  ! writing ssmis to grib (183,19,37 &85GHz)
-              nc=0
-              do ixchan=1,24
-                ichan=ixchan
-                igot=iget(846)
-                if(igot>0) then
-                if(lvls(ixchan,igot)==1)then
-                  nc=nc+1
-                  do j=jsta,jend
-                    do i=ista,iend
-                      grid1(i,j)=tb(i,j,nc)
-                    enddo
-                  enddo
-                  if (grib=="grib2") then
-                          cfld=cfld+1
-                          fld_info(cfld)%ifld=IAVBLFLD(igot)
-                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
-                  endif
-                 endif
-                endif
-              enddo
-              end if  ! end of outputting ssmis f20
               if (isis=='abi_g16')then  ! writing goes 16 to grib
                  nc=0
                  do ixchan=1,10
