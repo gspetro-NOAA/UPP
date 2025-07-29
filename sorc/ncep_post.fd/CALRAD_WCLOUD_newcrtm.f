@@ -126,20 +126,8 @@
         'abi_g18             ', &
         'ahi_himawari8       '/)
   character(len=13),parameter,dimension(1:n_sensors):: obslist=  &
-      (/'goes_img     ', &
-        'goes_img     ', &
-        'goes_img     ', &
-        'goes_img     ', &
-        'amsre        ', &
+      (/'amsre        ', &
         'tmi          ', &
-        'ssmi         ', &
-        'ssmi         ', &
-        'ssmi         ', &
-        'ssmis        ', &
-        'ssmis        ', &
-        'ssmis        ', &
-        'ssmis        ', &
-        'ssmis        ', &
         'abi          ', &
         'abi          ', &
         'abi          ', &
@@ -180,16 +168,14 @@
   character(20)::isis_local
 
   logical hirs2,msu,goessndr,hirs3,hirs4,hirs,amsua,amsub,airs,hsb  &
-            ,goes_img,abi,mhs,insat3d
+            ,abi,mhs,insat3d
   logical avhrr,avhrr_navy,lextra,ssu
-  logical ssmi,ssmis,amsre,amsre_low,amsre_mid,amsre_hig,change
-  logical ssmis_las,ssmis_uas,ssmis_env,ssmis_img
+  logical amsre,amsre_low,amsre_mid,amsre_hig,change
   logical sea,mixed,land,ice,snow,toss
   logical micrim,microwave
   logical post_abig16, post_abig17, post_abig18, post_abigr ! if true, user requested at least one abi channel
   logical fix_abig16, fix_abig17, fix_abig18   ! if true, abi_g16, abi_g17 fix files are available
   logical post_ahi8 ! if true, user requested at least on ahi channel (himawari8)
-  logical post_ssmis17 ! if true, user requested at least on ssmis_f17 channel
   !  logical,dimension(nobs):: luse
   logical, parameter :: debugprint = .false.
   type(crtm_atmosphere_type),dimension(1):: atmosphere
@@ -314,7 +300,7 @@
        .or. iget(874) > 0 .or. iget(875) > 0 &
        .or. iget(877) > 0 .or. iget(878) > 0 .or. iget(879) > 0  &
        .or. iget(880) > 0 .or. iget(881) > 0 .or. iget(882) > 0  &
-       .or. post_ahi8 .or. post_ssmis17 & 
+       .or. post_ahi8 & 
        .or. post_abig16 .or. post_abig17 .or. post_abig18 &
        .or. post_abigr ) then
 
@@ -480,24 +466,15 @@
            mhs        = obstype == 'mhs'
            airs       = obstype == 'airs'
            hsb        = obstype == 'hsb'
-           goes_img   = obstype == 'goes_img'
            abi        = obstype == 'abi'
            avhrr      = obstype == 'avhrr'
            avhrr_navy = obstype == 'avhrr_navy'
-           ssmi       = obstype == 'ssmi'
            amsre_low  = obstype == 'amsre_low'
            amsre_mid  = obstype == 'amsre_mid'
            amsre_hig  = obstype == 'amsre_hig'
            amsre      = amsre_low .or. amsre_mid .or. amsre_hig
-           ssmis      = obstype == 'ssmis'
-           ssmis_las  = obstype == 'ssmis_las'
-           ssmis_uas  = obstype == 'ssmis_uas'
-           ssmis_img  = obstype == 'ssmis_img'
-           ssmis_env  = obstype == 'ssmis_env'
 
-           ssmis=ssmis_las.or.ssmis_uas.or.ssmis_img.or.ssmis_env.or.ssmis
-
-           micrim=ssmi .or. ssmis .or. amsre   ! only used for MW-imager-QC and id_qc(ch)
+           micrim=amsre   ! only used for MW-imager-QC and id_qc(ch)
 
            microwave=amsua .or. amsub .or. mhs .or. msu .or. hsb .or. micrim
            ! check sensor list
@@ -524,10 +501,6 @@
               stop 19
            endif
 
-!          set Satellite IDs for F19 and F20 to valid values since CRTM will not
-!          simulate an instrument w/o a WMO ID:
-           if(isis=='ssmis_f19')channelinfo(sensorindex)%WMO_Satellite_Id=287
-           if(isis=='ssmis_f20')channelinfo(sensorindex)%WMO_Satellite_Id=289
 !          quiet verbose output warning messages
            if(isis=='abi_g16')channelinfo(sensorindex)%WMO_Satellite_Id=270
            if(isis=='abi_g16')channelinfo(sensorindex)%WMO_Sensor_Id=617
