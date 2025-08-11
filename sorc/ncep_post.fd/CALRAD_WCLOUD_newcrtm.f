@@ -120,6 +120,8 @@
   character(len=20),parameter,dimension(1:n_sensors):: sensorlist= &
       (/'amsre_aqua          ', &
         'tmi_trmm            ', &
+        'ssmis_f17           ', &
+        'ssmis_f18           ', &
         'abi_gr              ', &
         'abi_g16             ', &
         'abi_g17             ', &
@@ -128,6 +130,8 @@
   character(len=13),parameter,dimension(1:n_sensors):: obslist=  &
       (/'amsre        ', &
         'tmi          ', &
+        'ssmis        ', &
+        'ssmis        ', &
         'abi          ', &
         'abi          ', &
         'abi          ', &
@@ -170,12 +174,14 @@
   logical hirs2,msu,goessndr,hirs3,hirs4,hirs,amsua,amsub,airs,hsb  &
             ,abi,mhs,insat3d
   logical avhrr,avhrr_navy,lextra,ssu
-  logical amsre,amsre_low,amsre_mid,amsre_hig,change
+  logical ssmis,amsre,amsre_low,amsre_mid,amsre_hig,change
+  logical ssmis_las,ssmis_uas,ssmis_env,ssmis_img
   logical sea,mixed,land,ice,snow,toss
   logical micrim,microwave
   logical post_abig16, post_abig17, post_abig18, post_abigr ! if true, user requested at least one abi channel
   logical fix_abig16, fix_abig17, fix_abig18   ! if true, abi_g16, abi_g17 fix files are available
   logical post_ahi8 ! if true, user requested at least on ahi channel (himawari8)
+  logical post_ssmis17 ! if true, user requested at least on ssmis_f17 channel
   !  logical,dimension(nobs):: luse
   logical, parameter :: debugprint = .false.
   type(crtm_atmosphere_type),dimension(1):: atmosphere
@@ -300,7 +306,7 @@
        .or. iget(874) > 0 .or. iget(875) > 0 &
        .or. iget(877) > 0 .or. iget(878) > 0 .or. iget(879) > 0  &
        .or. iget(880) > 0 .or. iget(881) > 0 .or. iget(882) > 0  &
-       .or. post_ahi8 & 
+       .or. post_ahi8 .or. post_ssmis17 &
        .or. post_abig16 .or. post_abig17 .or. post_abig18 &
        .or. post_abigr ) then
 
@@ -428,7 +434,39 @@
          enddo
        endif
      endif
-     
+
+     ! SSMIS F17 (37H, 37V, 91H, 91V)
+     if(post_ssmis17)then
+       nchanl=14
+       do n = 825, 825+3  ! 825 set in RQSTFLD.f
+         if (iget(n) > 0) then
+           nchanl = nchanl+1
+         endif
+       enddo
+       if (nchanl > 14 .and. nchanl < 19) then
+         do n = 825, 825+3  ! 825 set in RQSTFLD.f
+           if (iget(n) == 0) channelinfo(11)%Process_Channel(n-825+15)=.False.  !  turn off channel processing
+         enddo
+       endif
+     endif
+
+     ! SSMIS, F16-F20 (183H,19H,19V,37H,37V,91H,91V)
+     if(iget(818)>0)then
+     call select_channels_L(channelinfo(10),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(818)),iget(818))
+     endif
+!     if(iget(825)>0)then
+!     call select_channels_L(channelinfo(11),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(825)),iget(825))
+!     endif
+     if(iget(832)>0)then
+     call select_channels_L(channelinfo(12),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(832)),iget(832))
+     endif
+     if(iget(839)>0)then
+     call select_channels_L(channelinfo(13),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(839)),iget(839))
+     endif
+     if(iget(846)>0)then
+     call select_channels_L(channelinfo(14),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(846)),iget(846))
+     endif
+
      ! Loop over data types to process    
      sensordo: do isat=1,n_sensors
 
@@ -442,6 +480,8 @@
              .or. iget(485) > 0 .or. iget(486) > 0)) .OR. &
              (isis=='tmi_trmm' .and. (iget(488) > 0 .or. iget(489) > 0  &
              .or. iget(490) > 0 .or. iget(491) > 0)) .OR. &
+             (isis=='ssmis_f17' .and. post_ssmis17) .OR. &
+             (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
              (isis=='abi_g16'  .and. post_abig16) .OR. &
              (isis=='abi_g17'  .and. post_abig17) .OR. &
              (isis=='abi_g18'  .and. post_abig18) .OR. &
@@ -473,8 +513,15 @@
            amsre_mid  = obstype == 'amsre_mid'
            amsre_hig  = obstype == 'amsre_hig'
            amsre      = amsre_low .or. amsre_mid .or. amsre_hig
+           ssmis      = obstype == 'ssmis'
+           ssmis_las  = obstype == 'ssmis_las'
+           ssmis_uas  = obstype == 'ssmis_uas'
+           ssmis_img  = obstype == 'ssmis_img'
+           ssmis_env  = obstype == 'ssmis_env'
 
-           micrim=amsre   ! only used for MW-imager-QC and id_qc(ch)
+           ssmis=ssmis_las.or.ssmis_uas.or.ssmis_img.or.ssmis_env.or.ssmis
+
+           micrim=ssmi .or. ssmis .or. amsre   ! only used for MW-imager-QC and id_qc(ch)
 
            microwave=amsua .or. amsub .or. mhs .or. msu .or. hsb .or. micrim
            ! check sensor list
@@ -1087,7 +1134,9 @@
 
            ! run crtm for non-nadir instruments / channels 
 
-           nonnadir: if((isis=='abi_g16'  .and. post_abig16) .OR. &
+           nonnadir: if((isis=='ssmis_f17' .and. post_ssmis17) .OR. &
+                        (isis=='ssmis_f18' .and. iget(832) > 0) .OR. &
+                        (isis=='abi_g16'  .and. post_abig16) .OR. &
                         (isis=='abi_g17'  .and. post_abig17) .OR. &
                         (isis=='abi_g18'  .and. post_abig18) .OR. &
                         (isis=='ahi_himawari8' .and. post_ahi8)) then
@@ -1123,9 +1172,14 @@
                        sublon=140.7
                     end if
 
-!                   Calculate based on satellite location:
-                    call GEO_ZENITH_ANGLE(i,j,gdlat(i,j),gdlon(i,j)  &
+!                   use zenith angle = 53.1 for SSMIS:
+                    if(isis=='ssmis_f17'.or.isis=='ssmis_f18')then
+                       sat_zenith=53.1
+                    else
+                       ! For other imagers (GOES-11 and 12), calculate based on satellite location:
+                       call GEO_ZENITH_ANGLE(i,j,gdlat(i,j),gdlon(i,j)  &
                             ,sublat,sublon,sat_zenith)
+                    endif
                     
                     geometryinfo(1)%sensor_zenith_angle=sat_zenith
 	            geometryinfo(1)%sensor_scan_angle=sat_zenith
@@ -1529,6 +1583,64 @@
                !      error_status = crtm_destroy(channelinfo)
                !      if (error_status /= success) &
                !     &   print*,'ERROR*** crtm_destroy error_status=',error_status
+
+              if(isis=='ssmis_f17') then ! writing ssmis f17 to grib (37, 91GHz)
+                 do ixchan=1,4
+                    ichan=14+ixchan
+                    igot=iget(824+ixchan)
+                      if(igot>0)then
+                       do j=jsta,jend
+                          do i=ista,iend
+                             grid1(i,j)=tb(i,j,ichan)
+                          enddo
+                       enddo
+                       if(grib=="grib2" )then
+                        cfld=cfld+1
+                        fld_info(cfld)%ifld=IAVBLFLD(igot)
+                        datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
+                       endif
+                    endif
+                 enddo
+                 do ixchan=1,2
+                  ichan=11+ixchan
+                  igot=iget(828+ixchan)
+                    if(igot>0)then
+                     do j=jsta,jend
+                        do i=ista,iend
+                           grid1(i,j)=tb(i,j,ichan)
+                        enddo
+                     enddo
+                     if(grib=="grib2" )then
+                      cfld=cfld+1
+                      fld_info(cfld)%ifld=IAVBLFLD(igot)
+                      datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
+                     endif
+                  endif
+               enddo
+
+              endif ! end of outputting ssmis f17
+              if (isis=='ssmis_f18')then  ! writing ssmis to grib (183,19,37 &85GHz)
+              nc=0
+              do ixchan=1,24
+                ichan=ixchan
+                igot=iget(832)
+                if(igot>0) then
+                if(lvls(ixchan,igot)==1)then
+                  nc=nc+1
+                  do j=jsta,jend
+                    do i=ista,iend
+                      grid1(i,j)=tb(i,j,nc)
+                    enddo
+                  enddo
+                  if (grib=="grib2") then
+                          cfld=cfld+1
+                          fld_info(cfld)%ifld=IAVBLFLD(igot)
+                          datapd(1:iend-ista+1,1:jend-jsta+1,cfld)=grid1(ista:iend,jsta:jend)
+                  endif
+                 endif
+                endif
+              enddo
+              end if  ! end of outputting ssmis f18
 
               if (isis=='abi_g16')then  ! writing goes 16 to grib
                  nc=0
