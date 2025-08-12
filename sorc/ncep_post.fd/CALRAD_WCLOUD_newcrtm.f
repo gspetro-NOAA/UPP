@@ -515,7 +515,7 @@
 
            ssmis=ssmis_las.or.ssmis_uas.or.ssmis_img.or.ssmis_env.or.ssmis
 
-           micrim=ssmi .or. ssmis .or. amsre   ! only used for MW-imager-QC and id_qc(ch)
+           micrim=ssmis .or. amsre   ! only used for MW-imager-QC and id_qc(ch)
 
            microwave=amsua .or. amsub .or. mhs .or. msu .or. hsb .or. micrim
            ! check sensor list
