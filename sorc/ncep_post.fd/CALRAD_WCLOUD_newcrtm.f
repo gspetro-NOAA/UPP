@@ -272,6 +272,10 @@
   do n = 969, 969+9  ! 969 set in RQSTFLD.f
     if (iget(n) > 0) post_ahi8=.true.
   enddo
+  post_ssmis17=.false.
+  do n = 825, 825+3  ! 825 set in RQSTFLD.f
+    if (iget(n) > 0) post_ssmis17=.true.
+  enddo
 
   !     DO NOT FORGET TO ADD YOUR NEW IGET HERE (IF YOU'VE ADDED ONE)      
   !     START SUBROUTINE CALRAD.
@@ -283,15 +287,15 @@
        .or. iget(498) > 0 .or. iget(499) > 0 &
        .or. iget(801) > 0 .or. iget(802) > 0 .or. iget(803) > 0  &
        .or. iget(804) > 0 .or. iget(805) > 0 &
-       .or. iget(807) > 0 .or. iget(809) > 0                     &
+       .or. iget(807) > 0 .or. iget(809) > 0 &
        .or. iget(810) > 0 .or. iget(811) > 0 &
        .or. iget(813) > 0 .or. iget(814) > 0 .or. iget(815) > 0  &
        .or. iget(816) > 0 .or. iget(817) > 0 &
        .or. iget(819) > 0 .or. iget(820) > 0 .or. iget(821) > 0  &
        .or. iget(822) > 0 .or. iget(823) > 0 .or. iget(824) > 0  &
-       .or. iget(826) > 0 .or. iget(827) > 0  &
+       .or. iget(825) > 0 .or. iget(826) > 0 .or. iget(827) > 0  &
        .or. iget(828) > 0 .or. iget(829) > 0 .or. iget(830) > 0  &
-       .or. iget(831) > 0 .or. iget(833) > 0  &
+       .or. iget(831) > 0 .or. iget(832) > 0 .or. iget(833) > 0  &
        .or. iget(834) > 0 .or. iget(835) > 0 .or. iget(836) > 0  &
        .or. iget(837) > 0 .or. iget(838) > 0 &
        .or. iget(840) > 0 .or. iget(841) > 0 .or. iget(842) > 0  &
@@ -434,7 +438,6 @@
          enddo
        endif
      endif
-
      ! SSMIS F17 (37H, 37V, 91H, 91V)
      if(post_ssmis17)then
        nchanl=14
@@ -450,21 +453,12 @@
        endif
      endif
 
-     ! SSMIS, F16-F20 (183H,19H,19V,37H,37V,91H,91V)
-     if(iget(818)>0)then
-     call select_channels_L(channelinfo(10),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(818)),iget(818))
-     endif
+     ! SSMIS, F17-F18 (183H,19H,19V,37H,37V,91H,91V)
 !     if(iget(825)>0)then
 !     call select_channels_L(channelinfo(11),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(825)),iget(825))
 !     endif
      if(iget(832)>0)then
      call select_channels_L(channelinfo(12),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(832)),iget(832))
-     endif
-     if(iget(839)>0)then
-     call select_channels_L(channelinfo(13),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(839)),iget(839))
-     endif
-     if(iget(846)>0)then
-     call select_channels_L(channelinfo(14),24,(/ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 /),lvls(1:24,iget(846)),iget(846))
      endif
 
      ! Loop over data types to process    
@@ -1180,7 +1174,7 @@
                        call GEO_ZENITH_ANGLE(i,j,gdlat(i,j),gdlon(i,j)  &
                             ,sublat,sublon,sat_zenith)
                     endif
-                    
+
                     geometryinfo(1)%sensor_zenith_angle=sat_zenith
 	            geometryinfo(1)%sensor_scan_angle=sat_zenith
 
