@@ -3,21 +3,73 @@ machine:
     nodes: 4
     ntaskspernode: 12 
     queue: batch
-    account: epic
+    account: ovp
     tasks: 
       rap:
+        nodes: 4
+        ntaskspernode: 12 
+        queue: batch
+        account: ovp
+      3drtma:
+        wtime: 00:20:00
+        queue: batch
+        account: ovp
+        ntasks: 128
+        ntasks-per-node: 32
+  hera: 
+    tasks:
+      rap: 
+        nodes: 4 
+        ntasks-per-node: 12
+        queue: batch
+        account: ovp
+      3drtma:
+        wtime: 00:20:00
+        queue: batch
+        account: ovp
+        nodes: 8
+        ntasks-per-node: 12
   hercules: 
     nodes: 2
     ntaskspernode: 24 
     queue: batch
-    account: epic
+    account: nems
     tasks: 
       rap:
+        nodes: 2
+        ntaskspernode: 24 
+        queue: batch
+        account: nems
+      3drtma: 
+        wtime: 00:30:00
+        nodes: 8
+        ntaskspernode: 12 
+        queue: batch
+        account: nems
+
   orion: 
     nodes: 2
     ntaskspernode: 24 
     queue: batch
-    account: epic
+    account: nems
     tasks: 
       rap:
+        nodes: 2
+        ntaskspernode: 24 
+        queue: batch
+        account: nems
+      3drtma: 
+        wtime: 00:30:00
+        nodes: 8
+        ntaskspernode: 12 
+        queue: batch
+        account: nems
 
+{%- if ${machine} == "ursa" %}
+   #SBATCH --exclusive
+   #SBATCH --ntasks 128
+   #SBATCH --tasks-per-node 32
+{%- else %}
+   #SBATCH -A {{ account }}
+   #SBATCH -N {{ nodes }} --ntasks-per-node={{ ntaskspernode }}
+{%- endif %}
