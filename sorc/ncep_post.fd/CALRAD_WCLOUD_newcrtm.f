@@ -117,7 +117,7 @@
   integer,parameter::  n_aerosols = 0
   ! Add your sensors here
   integer(i_kind),parameter:: n_sensors=9
-  character(len=9),parameter,dimension(1:n_sensors):: sensorlist= &
+  character(len=13),parameter,dimension(1:n_sensors):: sensorlist= &
       (/'amsre_aqua          ', &
         'tmi_trmm            ', &
         'ssmis_f17           ', &
@@ -127,7 +127,7 @@
         'abi_g17             ', &
         'abi_g18             ', &
         'ahi_himawari8       '/)
-  character(len=9),parameter,dimension(1:n_sensors):: obslist=  &
+  character(len=20),parameter,dimension(1:n_sensors):: obslist=  &
       (/'amsre        ', &
         'tmi          ', &
         'ssmis        ', &
