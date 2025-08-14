@@ -1,55 +1,56 @@
 machine:
   ursa: 
-    nodes: 4
-    ntaskspernode: 12 
     queue: batch
     account: ovp
     tasks: 
       rap:
         nodes: 4
         ntaskspernode: 12 
-        queue: batch
-        account: ovp
       3drtma:
         wtime: 00:20:00
-        queue: batch
-        account: ovp
         ntasks: 128
-        ntasks-per-node: 32
+        tasks-per-node: 32
+        exclusive: true
+      gefsv12:
+        wtime: 00:30:00
+        ntasks: 48
+        tasks-per-node: 24
+        exclusive: true
+      gefsv13:
+        ntasks: 48
+        tasks-per-node: 24
+        exclusive: true
   hera: 
+    queue: batch
+    account: ovp
     tasks:
       rap: 
         nodes: 4 
         ntasks-per-node: 12
-        queue: batch
-        account: ovp
       3drtma:
         wtime: 00:20:00
-        queue: batch
-        account: ovp
         nodes: 8
         ntasks-per-node: 12
   hercules: 
-    nodes: 2
-    ntaskspernode: 24 
     queue: batch
     account: nems
     tasks: 
       rap:
         nodes: 2
-        ntaskspernode: 24 
-        queue: batch
-        account: nems
+        ntaskspernode: 24
       3drtma: 
         wtime: 00:30:00
         nodes: 8
-        ntaskspernode: 12 
-        queue: batch
-        account: nems
-
+        ntaskspernode: 12
+      gefsv12: 
+        wtime: 00:30:00
+        nodes: 3 
+        ntasks-per-node: 12
+      gefsv13:
+        wtime: 00:30:00
+        nodes: 3
+        ntasks-per-node: 12
   orion: 
-    nodes: 2
-    ntaskspernode: 24 
     queue: batch
     account: nems
     tasks: 
@@ -61,9 +62,15 @@ machine:
       3drtma: 
         wtime: 00:30:00
         nodes: 8
-        ntaskspernode: 12 
-        queue: batch
-        account: nems
+        ntaskspernode: 12
+      gefsv12:
+        wtime: 00:30:00
+        nodes: 3
+        ntasks-per-node: 12
+      gefsv13:
+        wtime: 00:30:00
+        nodes: 3
+        ntasks-per-node: 12
 
 {%- if ${machine} == "ursa" %}
    #SBATCH --exclusive
