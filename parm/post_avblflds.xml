@@ -2832,22 +2832,6 @@
     </param>
 
     <param>
-       <post_avblfldidx>328</post_avblfldidx>
-       <shortname>SBT123_ON_TOP_OF_ATMOS</shortname>
-       <pname>SBT123</pname>
-       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
-       <scale>4.0</scale>
-    </param>
-
-    <param>
-       <post_avblfldidx>329</post_avblfldidx>
-       <shortname>SBT124_ON_TOP_OF_ATMOS</shortname>
-       <pname>SBT124</pname>
-       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
-       <scale>4.0</scale>
-    </param>
-
-    <param>
        <post_avblfldidx>330</post_avblfldidx>
        <shortname>SBT126_ON_TOP_OF_ATMOS</shortname>
        <pname>SBT126</pname>
@@ -3872,22 +3856,6 @@
        <post_avblfldidx>446</post_avblfldidx>
        <shortname>SBT112_ON_TOP_OF_ATMOS</shortname>
        <pname>SBT112</pname>
-       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
-       <scale>4.0</scale>
-    </param>
-
-    <param>
-       <post_avblfldidx>447</post_avblfldidx>
-       <shortname>SBT113_ON_TOP_OF_ATMOS</shortname>
-       <pname>SBT113</pname>
-       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
-       <scale>4.0</scale>
-    </param>
-
-    <param>
-       <post_avblfldidx>448</post_avblfldidx>
-       <shortname>SBT114_ON_TOP_OF_ATMOS</shortname>
-       <pname>SBT114</pname>
        <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
        <scale>4.0</scale>
     </param>
