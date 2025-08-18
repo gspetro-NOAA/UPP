@@ -234,7 +234,6 @@ export cmp_grib2_grib2=$svndir/ci/cmp_grib2_grib2.sh
 
 #differentiates for orion and hercules
 export rundir="${rundir}/upp-${machine}"
-#test -d "${rundir}" || mkdir -p "${rundir}"
 rm -rf ${rundir}; mkdir -p ${rundir}
 
 #set log file
@@ -244,6 +243,17 @@ if [ -f $logfile ] ; then
  rm -r $logfile
 fi
 export runtime_log=$svndir/ci/runtime.log.${machine}_${compiler}
+
+# Validate post_avblflds.xml against schema
+cd ${test_v}/parm
+if [[ ${machine} != "URSA" ]]; then
+  xmllint --noout --schema EMC_POST_Avblflds_Schema.xsd post_avblflds.xml
+  status=$?
+  if [[ ${status} -ne 0 ]]; then
+    echo "post_avblflds.xml schema validation error. Check EMC_POST_Avblflds_Schema.xsd for proper schema and adjust XML entries."
+    exit 2
+  fi
+fi
 
 #build executable
 if [ "$build_exe" == "yes" ]; then
