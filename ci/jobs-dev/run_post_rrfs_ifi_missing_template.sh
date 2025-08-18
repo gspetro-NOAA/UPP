@@ -4,11 +4,11 @@
 #SBATCH -e out.post.rrfs_ifi_missing
 #SBATCH -J rrfs_ifi_missing
 #SBATCH -t 00:30:00
-#SBATCH --ntasks 240
-#SBATCH --tasks-per-node 48
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
+#SBATCH --ntasks {{ ntasks }}
+#SBATCH --tasks-per-node {{ tasks-per-node }}
+#SBATCH -q {{ queue }}
+#SBATCH -A {{ account }}
+#SBATCH {{ exclusive }}
 
 set -x
 

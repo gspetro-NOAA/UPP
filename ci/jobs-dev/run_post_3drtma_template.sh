@@ -5,26 +5,14 @@
 #SBATCH -J 3drtma_test
 #SBATCH -t {{ wtime }}
 #SBATCH -q {{ queue }}
+#SBATCH {{ exclusive }}
 {%- if ${machine} == "ursa" %}
-   #SBATCH --exclusive
-   #SBATCH --ntasks {{ ntasks }}
-   #SBATCH --tasks-per-node {{ tasks-per-node }}
+#SBATCH --ntasks {{ ntasks }}
+#SBATCH --tasks-per-node {{ tasks-per-node }}
 {%- else %}
-   #SBATCH -A {{ account }}
-   #SBATCH -N {{ nodes }} --ntasks-per-node={{ ntaskspernode }}
+#SBATCH -N {{ nodes }} --ntasks-per-node={{ ntaskspernode }}
 {%- endif %}
-FCST_SUBDIR_TEMPLATE: '{% if user.RUN_ENVIR == "nco" %}${NET_default}.{init?fmt=%Y%m%d?shift=-${time_lag}}/{init?fmt=%H?shift=-${time_lag}}{% else %}{init?fmt=%Y%m%d%H?shift=-${time_lag}}{{ "/${ensmem_name}" if global.DO_ENSEMBLE }}/postprd{% endif %}'
-FCST_SUBDIR_TEMPLATE: 
-'
-{% if user.RUN_ENVIR == "nco" %}
-   ${NET_default}.{init?fmt=%Y%m%d?shift=-${time_lag}}/{init?fmt=%H?shift=-${time_lag}}
-{% else %}
-   {init?fmt=%Y%m%d%H?shift=-${time_lag}}{{ "/${ensmem_name}" if global.DO_ENSEMBLE }}/postprd
-{% endif %}'
 
-FCST_FN_TEMPLATE_PCPCOMBINE_OUTPUT: 
-'${NET_default}.t{init?fmt=%H}z{{ ".${ensmem_name}" 
-if user.RUN_ENVIR == "nco" and global.DO_ENSEMBLE }}.prslev.{{ task_run_post.envvars.POST_OUTPUT_DOMAIN_NAME }}.${FIELD_GROUP}${ACCUM_HH}h.{valid?fmt=%Y%m%d%H?shift=-${ACCUM_HH}H}_to_{valid?fmt=%Y%m%d%H}.nc'
 
 set -x
 

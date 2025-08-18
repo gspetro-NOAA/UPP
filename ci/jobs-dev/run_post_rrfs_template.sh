@@ -4,11 +4,12 @@
 #SBATCH -e out.post.rrfs
 #SBATCH -J rrfs_test
 #SBATCH -t 00:30:00
-#SBATCH --ntasks 240
-#SBATCH --tasks-per-node 48
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
+#SBATCH --ntasks {{ ntasks }}
+#SBATCH --tasks-per-node {{ tasks-per-node }}
+#SBATCH -N {{ nodes }} --ntasks-per-node={{ ntasks-per-node }}
+#SBATCH -q {{ queue }}
+#SBATCH -A {{ account }}
+#SBATCH {{ exclusive }}
 
 set -x
 

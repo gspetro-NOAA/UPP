@@ -4,13 +4,12 @@
 #SBATCH -e out.post.mpas_hfip
 #SBATCH -J mpas_hfip_test 
 #SBATCH -t 00:30:00
-#SBATCH --ntasks=256
-#SBATCH --cpus-per-task=4
-#SBATCH --time=00:30:00
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
-#SBATCH --mem=0
+#SBATCH --ntasks={{ ntasks }}
+#SBATCH --cpus-per-task={{ cpus-per-task }}
+#SBATCH -q {{ queue }}
+#SBATCH -A {{ account }}
+#SBATCH {{ exclusive }}
+#SBATCH {{ other }}
 
 set -x
 

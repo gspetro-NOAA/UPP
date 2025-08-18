@@ -4,11 +4,12 @@
 #SBATCH -e out.post.sfs
 #SBATCH -J sfs_test 
 #SBATCH -t 00:30:00
-#SBATCH --ntasks 48
-#SBATCH --tasks-per-node 24
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
+#SBATCH --ntasks {{ ntasks }}
+#SBATCH --tasks-per-node {{ tasks-per-node }}
+#SBATCH -N {{ nodes }} --ntasks-per-node={{ ntasks-per-node }}
+#SBATCH -q {{ queue }}
+#SBATCH -A {{ account }}
+#SBATCH {{ exclusive }}
 
 set -x
 

@@ -4,10 +4,10 @@
 #SBATCH -e out.post.nmmb
 #SBATCH -J nmmb_test
 #SBATCH -t 00:20:00
-#SBATCH -q batch
-#SBATCH -N 7 --ntasks-per-node=4
+#SBATCH -q {{ queue }}
+#SBATCH -N {{ nodes }} --ntasks-per-node={{ ntasks-per-node }}
 #SBATCH -A ovp
-#SBATCH --exclusive
+#SBATCH {{ exclusive }}
 
 set -x
 

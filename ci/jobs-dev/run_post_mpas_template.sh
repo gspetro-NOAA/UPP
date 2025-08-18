@@ -4,11 +4,11 @@
 #SBATCH -e out.post.mpas
 #SBATCH -J mpas_test
 #SBATCH -t 00:20:00
-#SBATCH --ntasks 192
-#SBATCH --tasks-per-node 48
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
+#SBATCH --ntasks {{ ntasks }}
+#SBATCH --tasks-per-node {{ tasks-per-node }}
+#SBATCH -q {{ queue }}
+#SBATCH -A {{ account }}
+#SBATCH {{ exclusive }}
 
 set -x
 
