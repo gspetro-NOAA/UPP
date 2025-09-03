@@ -3,13 +3,13 @@
 #SBATCH -o out.post.mpas_hfip
 #SBATCH -e out.post.mpas_hfip
 #SBATCH -J mpas_hfip_test 
-#SBATCH -t 00:30:00
-#SBATCH --ntasks=256
-#SBATCH --cpus-per-task=4
-#SBATCH --time=00:30:00
-#SBATCH -q batch
-#SBATCH -A nems
-#SBATCH --exclusive
+#SBATCH -t @[WTIME]
+#SBATCH -q @[QUEUE]
+#SBATCH -A @[accnr]
+#SBATCH @[EXCLUSIVE]
+#SBATCH --ntasks=@[N_TASKS]
+#SBATCH --cpus-per-task=@[CPUS_PER_TASK]
+#SBATCH @[MEM]
 
 set -x
 
@@ -25,13 +25,12 @@ date
 ############################################
 # Loading modules
 ############################################
+module purge
 module use ${svndir}/modulefiles
-module load hercules_$compiler
-module load prod_util/2.1.1
+module load $(echo "${machine}" | tr '[:upper:]' '[:lower:]')_${compiler}
 module load wgrib2/3.6.0
+module load prod_util/2.1.1
 module list
-
-ulimit -s unlimited
 
 msg="Starting mpas_hfip test"
 postmsg "$logfile" "$msg"

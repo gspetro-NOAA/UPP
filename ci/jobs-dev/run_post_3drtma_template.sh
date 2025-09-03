@@ -3,12 +3,14 @@
 #SBATCH -o out.post.3drtma
 #SBATCH -e out.post.3drtma
 #SBATCH -J 3drtma_test
-#SBATCH -t 00:20:00
-#SBATCH -q batch
-#SBATCH -A ovp
-#SBATCH --exclusive
-#SBATCH --ntasks 128
-#SBATCH --tasks-per-node 32
+#SBATCH -t @[WTIME]
+#SBATCH -q @[QUEUE]
+#SBATCH -A @[accnr]
+#SBATCH @[EXCLUSIVE]
+#SBATCH @[N_TASKS]
+#SBATCH @[TASKS_PER_NODE]
+#SBATCH @[NODES] @[N_TASKS_PER_NODE]
+
 
 set -x
 
@@ -25,8 +27,8 @@ date
 # Loading modules
 ############################################
 module purge
-module use $svndir/modulefiles
-module load ursa_$compiler
+module use ${svndir}/modulefiles
+module load $(echo "${machine}" | tr '[:upper:]' '[:lower:]')_${compiler}
 module load wgrib2/3.6.0
 module load prod_util/2.1.1
 module list

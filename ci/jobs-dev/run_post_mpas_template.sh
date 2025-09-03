@@ -3,11 +3,12 @@
 #SBATCH -o out.post.mpas
 #SBATCH -e out.post.mpas
 #SBATCH -J mpas_test
-#SBATCH -t 00:20:00
-#SBATCH --ntasks 200
-#SBATCH --tasks-per-node 40
-#SBATCH -q batch
-#SBATCH -A nems
+#SBATCH -t @[WTIME]
+#SBATCH -q @[QUEUE]
+#SBATCH -A @[accnr]
+#SBATCH @[EXCLUSIVE]
+#SBATCH --ntasks @[N_TASKS]
+#SBATCH --tasks-per-node @[TASKS_PER_NODE]
 
 set -x
 
@@ -23,13 +24,12 @@ date
 ############################################
 # Loading modules
 ############################################
-module use $svndir/modulefiles
-module load orion_$compiler
-module load prod_util/2.1.1
+module purge
+module use ${svndir}/modulefiles
+module load $(echo "${machine}" | tr '[:upper:]' '[:lower:]')_${compiler}
 module load wgrib2/3.6.0
+module load prod_util/2.1.1
 module list
-
-ulimit -s unlimited
 
 msg="Starting mpas test"
 postmsg "$logfile" "$msg"
@@ -37,8 +37,8 @@ postmsg "$logfile" "$msg"
 export POSTGPEXEC=${svndir}/exec/upp.x
 
 # specify forecast start time and hour
-export startdate=2025050515
-export fhr=002
+export startdate=2025071400
+export fhr=018
 export tmmark=tm00
 
 # specify your running and output directory
@@ -124,7 +124,6 @@ else
  msg="mpas test: post failed using your new post executable to generate ${filein2}"
  echo $msg 2>&1 | tee -a TEST_ERROR
 fi
-
 postmsg "$logfile" "$msg"
 done
 
