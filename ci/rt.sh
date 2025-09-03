@@ -284,11 +284,7 @@ export runtime_log=$svndir/ci/runtime.log.${machine}_${compiler}
 cd ${test_v}/parm
 if [[ ${machine} != "URSA" ]]; then
   xmllint --noout --schema EMC_POST_Avblflds_Schema.xsd post_avblflds.xml
-  status=$?
-  if [[ ${status} -ne 0 ]]; then
-    echo "post_avblflds.xml schema validation error. Check EMC_POST_Avblflds_Schema.xsd for proper schema and adjust XML entries."
-    exit 2
-  fi
+  # If an error results from running xmllint, rt.sh will terminate execution and report that the XML fails to validate. 
 fi
 
 #build executable
