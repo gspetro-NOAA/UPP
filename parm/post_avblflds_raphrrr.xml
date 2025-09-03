@@ -2845,6 +2845,38 @@
     </param>
 
     <param>
+       <post_avblfldidx>327</post_avblfldidx>
+       <shortname>SBT122_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT122</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>328</post_avblfldidx>
+       <shortname>SBT123_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT123</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>329</post_avblfldidx>
+       <shortname>SBT124_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT124</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>330</post_avblfldidx>
+       <shortname>SBT126_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT126</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
        <post_avblfldidx>331</post_avblfldidx>
        <shortname>TCDC_ON_ISOBARIC_SFC</shortname>
        <pname>TCDC</pname>
@@ -3919,6 +3951,38 @@
        <scale>4.0</scale>
     </param>
 
+    <param>
+       <post_avblfldidx>446</post_avblfldidx>
+       <shortname>SBT112_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT112</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>447</post_avblfldidx>
+       <shortname>SBT113_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT113</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>448</post_avblfldidx>
+       <shortname>SBT114_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT114</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>449</post_avblfldidx>
+       <shortname>SBT115_ON_TOP_OF_ATMOS</shortname>
+       <pname>SBT115</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
 <!-- 450-451 -->
     <param>
        <post_avblfldidx>450</post_avblfldidx>
@@ -3973,6 +4037,78 @@
        <pname>HINDEX</pname>
        <fixed_sfc1_type>surface</fixed_sfc1_type>
        <scale>3.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>456</post_avblfldidx>
+       <shortname>NON_NADIR_SBT122_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES12, Channel 2 on top of atmosphere</longname>
+       <pname>SBT122</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>457</post_avblfldidx>
+       <shortname>NON_NADIR_SBT123_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES12, Channel 3 on top of atmosphere</longname>
+       <pname>SBT123</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>458</post_avblfldidx>
+       <shortname>NON_NADIR_SBT124_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES12, Channel 4 on top of atmosphere</longname>
+       <pname>SBT124</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>459</post_avblfldidx>
+       <shortname>NON_NADIR_SBT126_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES12, Channel 6 on top of atmosphere</longname>
+       <pname>SBT126</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>460</post_avblfldidx>
+       <shortname>SBT112_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES11, Channel 2 on top of atmosphere</longname>
+       <pname>SBT112</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>461</post_avblfldidx>
+       <shortname>SBT113_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES11, Channel 3 on top of atmosphere</longname>
+       <pname>SBT113</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>462</post_avblfldidx>
+       <shortname>SBT114_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES11, Channel 4 on top of atmosphere</longname>
+       <pname>SBT114</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
+    </param>
+
+    <param>
+       <post_avblfldidx>463</post_avblfldidx>
+       <shortname>SBT115_ON_TOP_OF_ATMOS</shortname>
+       <longname>Simulated Brightness Temperature for GOES11, Channel 5 on top of atmosphere</longname>
+       <pname>SBT115</pname>
+       <fixed_sfc1_type>top_of_atmos</fixed_sfc1_type>
+       <scale>4.0</scale>
     </param>
 
 <!-- 464-466 EDR on ISOBARIC_SFC -->
@@ -5473,8 +5609,8 @@
        <shortname>SMOKE_ON_ENTIRE_ATMOS_SINGLE_LYR</shortname>
        <pdstmpl>tmpl4_48</pdstmpl>
        <pname>COLMD</pname>
-       <fixed_sfc1_type>entire_atmos_single_lyr</fixed_sfc1_type>
        <aerosol_type>particulate_org_matter_dry</aerosol_type>
+       <fixed_sfc1_type>entire_atmos_single_lyr</fixed_sfc1_type>
        <scale>5.0</scale>
     </param>
 
@@ -5483,8 +5619,8 @@
        <shortname>SMOKE_ON_HYBRID_LVL</shortname>
        <pdstmpl>tmpl4_48</pdstmpl>
        <pname>MASSDEN</pname>
-       <fixed_sfc1_type>hybrid_lvl</fixed_sfc1_type>
        <aerosol_type>particulate_org_matter_dry</aerosol_type>
+       <fixed_sfc1_type>hybrid_lvl</fixed_sfc1_type>
        <scale>6.0</scale>
     </param>
 
@@ -5493,8 +5629,8 @@
        <shortname>SMOKE_ON_ISOBARIC_SFC</shortname>
        <pdstmpl>tmpl4_48</pdstmpl>
        <pname>MASSDEN</pname>
-       <fixed_sfc1_type>isobaric_sfc</fixed_sfc1_type>
        <aerosol_type>particulate_org_matter_dry</aerosol_type>
+       <fixed_sfc1_type>isobaric_sfc</fixed_sfc1_type>
        <scale>6.0</scale>
     </param>
 
@@ -5503,9 +5639,9 @@
        <shortname>SMOKE_ON_SPEC_HGT_LVL_ABOVE_GRND_8m</shortname>
        <pdstmpl>tmpl4_48</pdstmpl>
        <pname>MASSDEN</pname>
+       <aerosol_type>particulate_org_matter_dry</aerosol_type>
        <fixed_sfc1_type>spec_hgt_lvl_above_grnd</fixed_sfc1_type>
        <level>8.</level>
-       <aerosol_type>particulate_org_matter_dry</aerosol_type>
        <scale>6.0</scale>
     </param>
 
