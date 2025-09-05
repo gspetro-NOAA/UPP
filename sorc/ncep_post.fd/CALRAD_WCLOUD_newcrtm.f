@@ -308,10 +308,7 @@
        .or. iget(448) > 0 .or. iget(449) > 0 .or. iget(456) > 0  &
        .or. iget(457) > 0 .or. iget(458) > 0 .or. iget(459) > 0  &
        .or. iget(460) > 0 .or. iget(461) > 0 .or. iget(462) > 0  &
-       .or. iget(463) > 0  &
-       .or. iget(492) > 0 .or. iget(493) > 0 .or. iget(494) > 0  &
-       .or. iget(495) > 0 .or. iget(496) > 0 .or. iget(497) > 0  &
-       .or. iget(498) > 0 .or. iget(499) > 0 .or. iget(800) > 0  &
+       .or. iget(463) > 0 .or. iget(800) > 0  &
        .or. iget(801) > 0 .or. iget(802) > 0 .or. iget(803) > 0  &
        .or. iget(804) > 0 .or. iget(805) > 0 .or. iget(806) > 0  &
        .or. iget(807) > 0 .or. iget(809) > 0                     &
