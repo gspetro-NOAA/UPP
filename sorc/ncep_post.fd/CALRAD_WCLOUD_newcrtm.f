@@ -116,7 +116,7 @@
   !      integer,parameter::  n_clouds = 4 
   integer,parameter::  n_aerosols = 0
   ! Add your sensors here
-  integer(i_kind),parameter:: n_sensors=23
+  integer(i_kind),parameter:: n_sensors=21
   character(len=20),parameter,dimension(1:n_sensors):: sensorlist= &
       (/'imgr_g15            ', &
         'imgr_g13            ', &
