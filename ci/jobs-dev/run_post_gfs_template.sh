@@ -26,8 +26,8 @@ date
 # Loading modules
 ############################################
 module purge
-module use $svndir/modulefiles
-module load ursa_$compiler
+module use ${svndir}/modulefiles
+module load $(echo "${machine}" | tr '[:upper:]' '[:lower:]')_${compiler}
 module load wgrib2/3.6.0
 module load prod_util/2.1.1
 module list
@@ -72,8 +72,17 @@ cp ${svndir}/fix/nam_micro_lookup.dat ./eta_micro_lookup.dat
 cp ${svndir}/parm/params_grib2_tbl_new ./params_grib2_tbl_new
 
 # get crtm fix files
+<<<<<<< HEAD
 for what in "amsre_aqua" "ssmis_f17" "ssmis_f18" \
     "tmi_trmm" "abi_gr" "ahi_himawari8" ; do
+=======
+for what in "amsre_aqua" "imgr_g11" "imgr_g12" "imgr_g13" \
+    "imgr_g15" "imgr_mt1r" "imgr_mt2" "seviri_m10" \
+    "ssmi_f13" "ssmi_f14" "ssmi_f15" "ssmis_f16" \
+    "ssmis_f17" "ssmis_f18" "ssmis_f19" "ssmis_f20" \
+    "tmi_trmm" "v.seviri_m10" "imgr_insat3d" "abi_gr" \
+    "ahi_himawari8" ; do
+>>>>>>> ccdf5abc534d45878a0ca63c3cc5e7513f8c579b
     ln -s "${CRTM_FIX}/${what}.TauCoeff.bin" .
     ln -s "${CRTM_FIX}/${what}.SpcCoeff.bin" .
 done
