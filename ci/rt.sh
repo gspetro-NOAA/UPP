@@ -229,12 +229,14 @@ elif [ $mac3 = herc ] ; then
  export rundir=${rundir:-"/work2/noaa/stmp/$USER"}
  export accnr=${accnr:-"rtrr"}
  module purge
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/Core
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/intel-oneapi-mpi/2021.13-sqiixt7/gcc/13.3.0
+ module use /work2/noaa/epic/bweir/spack-stack/envs/ud-oneapi-uwtools/install/modulefiles/Core
+ module use /work2/noaa/epic/bweir/spack-stack/envs/ud-oneapi-uwtools/install/modulefiles/gcc/13.3.0
+ module use /work2/noaa/epic/bweir/spack-stack/envs/ud-oneapi-uwtools/install/modulefiles/oneapi/2024.2.1
  module load stack-oneapi/2024.2.1
  module load stack-intel-oneapi-mpi/2021.13
  module load prod_util/2.1.1
- module load python/3.11.7
+ module load python/3.11.11
+ module load uwtools/2.7.1
 elif [ $mac = d -o $mac = c ]; then #for WCOSS2
  export machine=WCOSS2
  export homedir=${homedir:-"/u/wen.meng/noscrub/test_suite"}
@@ -329,9 +331,11 @@ if [[ ${machine} != "WCOSS2" ]]; then
 
    for test in ${test_list}
    do
-      set_global
-      ${test}
-      atparse < run_post_${test}_template.sh > run_post_${test}_${machine}.sh
+      # set_global
+      # ${test}
+      echo ${test}
+      uw template translate --input-file run_post_${test}_template.sh --output-file run_post_${test}_template_j.sh
+      uw template render --input-file run_post_${test}_template_j.sh --values-file test.sh --output-file run_post_${test}_${machine}.sh
    done
 
 fi
