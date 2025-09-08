@@ -21,6 +21,7 @@
 !> 2023-03-22 | WM Lewis       | Added support for using effective radius arrays from RRFS
 !> 2023-10-25 | Eric James     | Bug fix for invalid land category in CRTM
 !> 2025-03-10 | Hua Leighton   | Added channel 12 and 13 in ssmis-f17 
+!> 2025-09-05 | Gillian Petro  | Remove legacy satellite products: amsre (483-86), tim (488-91), and ssmi(s) TB (492-499)
 !>
 !> @author Chuang @date 2007-01-17
 !---------------------------------------------------------------------------
