@@ -20,6 +20,11 @@
 !> 2002-08-15 | H CHuang     | Unit correction and generalize projection options
 !> 2021-03-11 | Bo Cui       | Change local arrays to dimension (im,jsta:jend)
 !> 2023-01-24 | Sam Trahan   | Comment-out wordy debug writes
+!> 2025-11-13 | J Kenyon     | Reintroduce a previous algorithm to create a
+!>                           | "synthetic" cloud-fraction field, intended for
+!>                           | RTMA applications
+!> 2026-04-22 | Alyson Stahl | Fix rank mismatch warnings for gcc compiler by adding
+!>                           | NPHS_tmp, PT_tmp3d, SLLEVEL_tmp, and SLDPTH_tmp arrays
 !>
 !> @author Russ Treadon W/NP2 @date 1993-11-10
       SUBROUTINE INITPOST
@@ -62,9 +67,9 @@
               isf_surface_physics, nsoil, ardlw, ardsw, asrfc, me, mpi_comm_comp,  &
               nphs, smflag, spl, lsm, dt, prec_acc_dt, dtq2, tsrfc, trdlw,         &
               trdsw, theat, tclod, tprec, nprec, alsl, im, jm, lm, grib,           &
-              prec_acc_dt1, submodelname
+              prec_acc_dt1, submodelname, synthetic_cfr
       use params_mod, only: capa, g, rd, d608, tfrz, ad05, cft0, stbol,            &
-              p1000, pi, rtd, lheat, dtr, erad
+              p1000, pi, rtd, lheat, dtr, erad, cloud_def_p
       use lookup_mod, only: thl, plq, ptbl, ttbl, rdq, rdth, rdp, rdthe, pl,       &
               qs0, sqs, sthe, the0, ttblq, rdpq, rdtheq, stheq, the0q
       use gridspec_mod, only: gridtype, dxval, latstart, latlast, lonstart,        &
@@ -104,8 +109,12 @@
       REAL DUMMY2 ( IM, JM )
       real, allocatable::  msft(:,:)
       INTEGER IDUMMY ( IM, JM )
+      integer :: NPHS_tmp(1,1,1)
       REAL,allocatable ::  DUM3D ( :, :, : )
 !      REAL DUM3D2 ( IM+1, JM+1, LM+1 )
+      real :: PT_tmp3d(1,1,1)
+      real, allocatable :: SLLEVEL_tmp(:,:,:)
+      real, allocatable :: SLDPTH_tmp(:,:,:)
         real, allocatable::  pvapor(:,:)
         real, allocatable::  pvapor_orig(:,:)      
       REAL, ALLOCATABLE :: THV(:,:,:)
@@ -121,6 +130,7 @@
       integer, external :: iw3jdn
       real sun_zenith,sun_azimuth, ptop_low, ptop_mid, ptop_high
       real delta_theta4gust
+      real watericetotal, radius, totcount, cloudcount
 !
 !
 !***********************************************************************
@@ -795,8 +805,9 @@
       call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY2,       &
         IM,1,JM,1,IM,JS,JE,1)
       VarName='P_TOP'
-      call getVariable(fileName,DateStr,DataHandle,VarName,PT,           & 
+      call getVariable(fileName,DateStr,DataHandle,VarName,PT_tmp3d,    & 
         1,1,1,1,1,1,1,1)
+      PT = PT_tmp3d(1,1,1)
 
          DO I=1,IM
             DO J=JS,JE
@@ -1148,8 +1159,12 @@
         end do
        end do
        
-! WRF EM outputs 3D cloud cover now
+! Assign the cloud-fraction array (CFR)
       IF(MODELNAME == 'RAPR')THEN
+        IF( SUBMODELNAME /= 'RTMA' .OR.                                     &
+           (SUBMODELNAME == 'RTMA' .AND. (.NOT. synthetic_cfr)) )THEN
+         ! For non-RTMA RAPR applications (e.g., RAP, HRRR):
+         ! Assign the CFR array using the model-state cloud fraction.
          VarName='CLDFRA_BL'
          call getVariable(fileName,DateStr,DataHandle,VarName,DUM3D,        & 
             IM+1,1,JM+1,LM+1,IM,JS,JE,LM)
@@ -1160,7 +1175,56 @@
            end do
           end do
          end do 
-      ELSE
+        ELSE
+         ! For RTMA: since cloud fraction is not an analysis
+         ! variable, assign the CFR array by creating a "synthetic"
+         ! cloud fraction.  Namely, use the resolved cloud-water
+         ! and cloud-ice fields surrounding each grid volume to
+         ! calculate a neighborhood fraction of exceedance.
+         !
+         ! --J Kenyon (13 Nov 2025): This fraction-of-exceedance
+         ! algorithm was reintroduced to support 3DRTMA requirements.
+         ! It essentially replicates previous code that was used for 
+         ! earlier RAP/HRRR versions.
+
+          radius = 16100. ! Use a horizontal neighborhood search of 16.1 km / 10 mi (arbitrary)
+          call ext_ncd_get_dom_ti_real(DataHandle,'DX',tmp, &
+            1,ioutcount,istatus)
+          dxval= nint(tmp)
+          numr = nint(radius/dxval)
+
+          do k = 1,lm
+            do j = jsta_2l, jend_2u
+               do i = 1, im
+                 dummy(i,j)=QQW(i,j,k)
+                 dummy2(i,j)=QQI(i,j,k)
+               enddo ! i
+            enddo ! j
+
+            call AllGETHERV(dummy)
+            call AllGETHERV(dummy2)
+
+            do j = jsta_2l, jend_2u
+              do i = 1, im
+                  totcount   =0.
+                  cloudcount =0.
+                  CFR(i,j,k) =0.
+                  do ic = max(1,I-numr),min(im,I+numr)
+                  do jc = max(1,J-numr),min(jm,J+numr)
+                    totcount = totcount+1.
+                    watericetotal = dummy(ic,jc) + dummy2(ic,jc)
+                    if (watericetotal .gt. cloud_def_p) &
+                         cloudcount=cloudcount+1.
+                         ! Note that the value of cloud_def_p is also arbitrary
+                  enddo ! jc
+                  enddo ! ic
+                  CFR(i,j,k) = min(1.,cloudcount/totcount)
+              enddo ! i
+            enddo ! j
+          enddo ! k
+
+        ENDIF ! SUBMODELNAME
+      ELSE ! MODELNAME
          VarName='CLDFRA'
          call getVariable(fileName,DateStr,DataHandle,VarName,DUM3D,        & 
             IM+1,1,JM+1,LM+1,IM,JS,JE,LM)
@@ -1371,12 +1435,18 @@ endif  ! 1==2
 
       ! RUC LSM - use depths of center of soil layer
       IF(iSF_SURFACE_PHYSICS==3)then ! RUC LSM
-       call getVariable(fileName,DateStr,DataHandle,'ZS',SLLEVEL,  &
+       allocate(SLLEVEL_tmp(NSOIL,1,1))
+       call getVariable(fileName,DateStr,DataHandle,'ZS',SLLEVEL_tmp,  &
         NSOIL,1,1,1,NSOIL,1,1,1)
+       SLLEVEL(:) = SLLEVEL_tmp(:,1,1)
+       deallocate(SLLEVEL_tmp)
        print*,'SLLEVEL= ',(SLLEVEL(N),N=1,NSOIL)
       ELSE
-       call getVariable(fileName,DateStr,DataHandle,'DZS',SLDPTH,  &
+       allocate(SLDPTH_tmp(NSOIL,1,1))
+       call getVariable(fileName,DateStr,DataHandle,'DZS',SLDPTH_tmp,  &
         NSOIL,1,1,1,NSOIL,1,1,1)
+       SLDPTH(:) = SLDPTH_tmp(:,1,1)
+       deallocate(SLDPTH_tmp)
        print*,'SLDPTH= ',(SLDPTH(N),N=1,NSOIL)
       END IF
 
@@ -2898,8 +2968,9 @@ endif  ! 1==2
 
 ! physics calling frequency
       VarName='STEPBL'
-      call getIVariableN(fileName,DateStr,DataHandle,VarName,NPHS,       &
+  call getIVariableN(fileName,DateStr,DataHandle,VarName,NPHS_tmp,   &
         1,1,1,1,1,1,1,1)
+  NPHS = NPHS_tmp(1,1,1)
      
 
 !        ncdump -h

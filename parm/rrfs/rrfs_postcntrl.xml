@@ -2359,6 +2359,16 @@
        </param>
 
        <param>
+       <shortname>DUST_EMISSIONS</shortname>
+       <scale>5.0</scale>
+       </param>
+
+       <param>
+       <shortname>MEAN_FIRE_RDIATV_PWR</shortname>
+       <scale>4.0</scale>
+       </param>
+
+       <param>
        <shortname>SMOKE_ON_SPEC_HGT_LVL_ABOVE_GRND_8m</shortname>
        <scale>6.0</scale>
        </param>
@@ -2380,6 +2390,11 @@
 
        <param>
        <shortname>COARSEPM_ON_ENTIRE_ATMOS_SINGLE_LYR</shortname>
+       <scale>5.0</scale>
+       </param>
+
+       <param>
+       <shortname>TOTAL_DUST_ON_ENTIRE_ATMOS_SINGLE_LYR</shortname>
        <scale>5.0</scale>
        </param>
 
@@ -2406,6 +2421,21 @@
        <param>
        <shortname>HWP_ON_SURFACE</shortname>
        <scale>5.0</scale>
+       </param>
+
+       <param>
+       <shortname>HGTMD_AEROSOL_TOP</shortname>
+       <scale>6.0</scale>
+       </param>
+
+       <param>
+       <shortname>HGTMD_AEROSOL_BOT</shortname>
+       <scale>6.0</scale>
+       </param>
+
+       <param>
+       <shortname>HGTMD_AEROSOL_MID</shortname>
+       <scale>6.0</scale>
        </param>
 
        <param>
@@ -3084,7 +3114,7 @@
        <scale>5.0</scale>
        </param>
 
-<!--   <param>
+       <param>
        <shortname>DOWNWARD_CAPE</shortname>
        <pname>DCAPE</pname>
        <table_info>NCEP</table_info>
@@ -3093,7 +3123,7 @@
        <fixed_sfc2_type>spec_pres_above_grnd</fixed_sfc2_type>
        <level2>0.</level2>
        <scale>4.0</scale>
-       </param> -->
+       </param>
 
        <param>
        <shortname>UESH_ON_EFL</shortname>
@@ -3105,6 +3135,20 @@
        <param>
        <shortname>VESH_ON_EFL</shortname>
        <pname>VESH</pname>
+       <table_info>NCEP</table_info>
+       <scale>6.0</scale>
+       </param>
+
+       <param>
+       <shortname>UEID_ON_EFL</shortname>
+       <pname>UEID</pname>
+       <table_info>NCEP</table_info>
+       <scale>6.0</scale>
+       </param>
+
+       <param>
+       <shortname>VEID_ON_EFL</shortname>
+       <pname>VEID</pname>
        <table_info>NCEP</table_info>
        <scale>6.0</scale>
        </param>
