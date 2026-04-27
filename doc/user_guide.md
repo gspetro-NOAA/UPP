@@ -55,5 +55,4 @@ Earth Prediction Innovation Center (EPIC). Community support for the UPP with WR
 * The [UPP wiki](https://github.com/NOAA-EMC/UPP/wiki) includes relevant information and links for users and developers. 
 * Instructions on technical code documentation are available in a set of [Doxygen Documentation Slides](https://github.com/NOAA-EMC/UPP/wiki/DoxygenDocumentation.pdf).
 
-Code Managers: Wen Meng (EMC), Huiya Chuang (EMC), Fernando Andrade-Maldonado (EPIC)
-
+Code Managers: Wen Meng (EMC), Benjamin Blake (EMC), Christopher Hill (EMC), Chad Lyden (EPIC), Gillian Petro (EPIC)
