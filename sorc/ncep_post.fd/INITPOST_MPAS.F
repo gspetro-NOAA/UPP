@@ -38,6 +38,10 @@
 !>                           | correct the initial assignment of ZINT;
 !>                           | simplify/refactor the re-assignment of ZINT using the hypsometric equation;
 !>                           | add numerous descriptive comments.
+!> 2026-03-20 | Jaymes Kenyon| Add mixing length (EL_PBL), reciprocal of the Obukhov length (RMOL), and some 
+!>                           | descriptive comments for other fields
+!> 2026-04-22 | Alyson Stahl | Fix rank mismatch warnings for gcc compiler by adding
+!>                           | PT_tmp3d, SLLEVEL_tmp, and SLDPTH_tmp arrays
 !>
 !> @author Jaymes Kenyon (GSL) @date 2024-08-14
 
@@ -47,7 +51,7 @@
       use vrbls3d, only: t, u, uh, v, vh, wh, q, pmid, t, omga, pint, alpint,      &
               qqr, qqs, qqi, qqg, qqnw, qqni, qqnr, qqng, cwm, qqw, qqi, qqr, qqs, extcof55,&
               q2, zint, zmid, ttnd, cfr, cfr_raw, qc_bl, REF_10CM,                 &
-              qqnwfa,qqnifa,taod5503d,aextc55
+              qqnwfa,qqnifa,taod5503d,aextc55,el_pbl
       use vrbls2d, only: tmax, qrmax, htop, hbot, cuppt, fis, cfrach, cfracl,      &
               sr, cfrach, cfracm, wspd10max, w_up_max, w_dn_max, w_mean, refd_max, &
               up_heli_max, up_heli_max16, grpl_max, up_heli, up_heli16,            &
@@ -60,7 +64,7 @@
               prate_max,max_prate_1min,max_prate_5min,max_prate_10min,             &
               nca_refd, qv2m, qshltr, smstav, ssroff, bgroff,                      &
               vegfrc, acsnow, cmc, sst, thz0, qs, qvg,                             &
-              z0, ustar, radot, ths, acsnom, cuprec, ancprc, acprec,               &
+              z0, ustar, rmol, radot, ths, acsnom, cuprec, ancprc, acprec,         &
               rainc_bucket, pcp_bucket, cprate, prec, snownc, snow_bucket,         &
               graup_bucket, hail_bucket, swddni, swddif, mean_frp,                 &
               acgraup, acfrain,                                                    &
@@ -126,6 +130,9 @@
       INTEGER IDUMMY ( IM, JM )
       REAL,allocatable ::  DUM3D ( :, :, : )
 !      REAL DUM3D2 ( IM+1, JM+1, LM+1 )
+      real :: PT_tmp3d(1,1,1)
+      real, allocatable :: SLLEVEL_tmp(:,:,:)
+      real, allocatable :: SLDPTH_tmp(:,:,:)
  
       integer js,je,jev,iyear,imn,iday,itmp,ioutcount,istatus,          &
               ii,jj,ll,i,j,l,nrdlw,nrdsw,n,igdout,irtn,idyvald,         &
@@ -135,7 +142,6 @@
       real LAT
 
       integer jdn, numr, ic, jc, ierr
-      integer, external :: iw3jdn
       real sun_zenith,sun_azimuth, ptop_low, ptop_mid, ptop_high
 
 !***********************************************************************
@@ -726,8 +732,9 @@
 
 ! Pressure at model top
       VarName='P_TOP'
-      call getVariable(fileName,DateStr,DataHandle,VarName,PT,           & 
+      call getVariable(fileName,DateStr,DataHandle,VarName,PT_tmp3d,    & 
         1,1,1,1,1,1,1,1)
+      PT = PT_tmp3d(1,1,1)
        DO I=1,IM
         DO J=JS,JE
           PINT (I,J,1)  = PT
@@ -1038,6 +1045,17 @@
        end do
       end do 
 
+      VarName='EL_PBL'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUM3D,        &
+         IM+1,1,JM+1,LM+1,IM,JS,JE,LM)
+      do l=1,lm
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            EL_PBL ( i, j, l ) = dum3d ( i, j, l )
+        end do
+       end do
+      end do
+
       IF(MODELNAME == 'RAPR')THEN
 ! J. Kenyon - 4 Apr 2019:  revised cloud-cover diagnostics for RAP/HRRR
           PTOP_LOW  = 64200.
@@ -1210,12 +1228,18 @@ endif  ! 1==2
       SLDPTH=0.0 !Assign bogus value
 
       IF(iSF_SURFACE_PHYSICS==3)then ! RUC LSM - use depths of center of soil layer
-       call getVariable(fileName,DateStr,DataHandle,'ZS',SLLEVEL,  &
+       allocate(SLLEVEL_tmp(NSOIL,1,1))
+       call getVariable(fileName,DateStr,DataHandle,'ZS',SLLEVEL_tmp,  &
         NSOIL,1,1,1,NSOIL,1,1,1)
+       SLLEVEL(:) = SLLEVEL_tmp(:,1,1)
+       deallocate(SLLEVEL_tmp)
        if (me==0) print*,'SLLEVEL= ',(SLLEVEL(N),N=1,NSOIL)
       ELSE ! Other LSMs (e.g., Noah) - use thicknesses of soil layers
-       call getVariable(fileName,DateStr,DataHandle,'DZS',SLDPTH,  &
+       allocate(SLDPTH_tmp(NSOIL,1,1))
+       call getVariable(fileName,DateStr,DataHandle,'DZS',SLDPTH_tmp,  &
         NSOIL,1,1,1,NSOIL,1,1,1)
+       SLDPTH(:) = SLDPTH_tmp(:,1,1)
+       deallocate(SLDPTH_tmp)
        if (me==0) print*,'SLDPTH= ',(SLDPTH(N),N=1,NSOIL)
       END IF
 
@@ -1820,6 +1844,7 @@ endif  ! 1==2
         end do
        end do
 
+!-- Aerodynamic roughness length
       IF(MODELNAME == 'RAPR')THEN
          VarName='ZNT'
          call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
@@ -1840,6 +1865,7 @@ endif  ! 1==2
           end do
       END IF
 
+!-- Friction velocity
       VarName='UST'
       call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
         IM,1,JM,1,IM,JS,JE,1)
@@ -1848,7 +1874,16 @@ endif  ! 1==2
             USTAR( i, j ) = dummy ( i, j )
         end do
        end do
-!       print*,'USTAR at ',ii,jj,' = ',USTAR(ii,jj)
+
+!-- Reciprocal of the Obukhov length (i.e., 1/L)
+      VarName='RMOL'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            RMOL( i, j ) = dummy ( i, j )
+        end do
+       end do
 
       VarName='TSK'
       call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &  
@@ -2654,7 +2689,7 @@ endif  ! 1==2
        end do
       ELSE
 
-        jdn=iw3jdn(idat(3),idat(1),idat(2))
+        call w3fs13(idat(3),idat(1),idat(2),jdn)
         do j=jsta,jend
          do i=1,im
              call zensun(jdn,float(idat(4)),gdlat(i,j),gdlon(i,j)     &
