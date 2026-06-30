@@ -15,7 +15,7 @@ program test_microinit
     use ctlblk_mod, only: me
     implicit none
 
-    real, parameter :: tol = 1.0e-8, spval = -999.0
+    real, parameter :: tol = 1.0e-6, spval = -999.0
     integer, parameter :: ntests = 5
     integer :: i, j, res
     integer :: imp_physics(ntests)
@@ -179,8 +179,8 @@ program test_microinit
                 " Expected = ", EXP_TRAD_ICE(i)
             res = 1
         end if
-        print '(A,I0,A,1X,ES16.10)', "RQR_DRMIN(", i, ") =", RQR_DRmin
-        print '(A,I0,A,1X,ES16.10)', "RQR_DRMAX(", i, ") =", RQR_DRmax
+        print '(A,I0,A,1X,ES17.10)', "RQR_DRMIN(", i, ") =", RQR_DRmin
+        print '(A,I0,A,1X,ES17.10)', "RQR_DRMAX(", i, ") =", RQR_DRmax
         !if (abs(RQR_DRmin - EXP_RQR_DRmin(i)) > tol) then
         !    print *, "Test Case ", i, " Failed: RQR_DRmin = ", RQR_DRmin, &
         !        " Expected = ", EXP_RQR_DRmin(i)

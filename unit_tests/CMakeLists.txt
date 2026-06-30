@@ -35,6 +35,15 @@ function(create_mpi_test name num_procs)
   set_tests_properties(${name}_np_${num_procs} PROPERTIES PROCESSORS ${num_procs})
 endfunction()
 
+# Some very small test files may be committed to the repo. This
+# function copies such a data file to the build directory.
+function(copy_test_data name)
+  message(STATUS "Copying test file ${name}")
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/data/${name}"
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+endfunction()
+
 create_test(test_dewpoint)
 create_test(test_bound)
 create_test(test_caldrg)
@@ -79,19 +88,30 @@ create_test(test_calgustconv)
 create_test(test_paramr)
 create_test(test_upp_physics)
 create_test(test_calrh)
+create_test(test_lfmfld)
+create_test(test_lfmfld_gfs)
+create_test(test_calrh_pw)
 create_test(test_frzlvl)
 create_test(test_frzlvl2)
 create_test(test_ngmslp)
+create_test(test_table)
+create_test(test_tableq)
 
-configure_file(${CMAKE_SOURCE_DIR}/fix/hires_micro_lookup.dat
+configure_file(${PROJECT_SOURCE_DIR}/fix/hires_micro_lookup.dat
                ${CMAKE_CURRENT_BINARY_DIR}/eta_micro_lookup.dat COPYONLY)
 create_test(test_microinit)
 set_tests_properties(test_microinit PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 if(BUILD_WITH_NEMSIO)
-  create_test(test_assignnemsiovar SRC_FILES ${CMAKE_SOURCE_DIR}/sorc/ncep_post.fd/ASSIGNNEMSIOVAR.f)
+  create_test(test_assignnemsiovar SRC_FILES ${PROJECT_SOURCE_DIR}/sorc/ncep_post.fd/ASSIGNNEMSIOVAR.f)
 endif()
 
 # The following tests require MPI to run.
 create_mpi_test(test_allgetherv 1)
 create_mpi_test(test_allgetherv 2)
+
+# Copy test data files
+copy_test_data(ref_table_case1.txt)
+copy_test_data(ref_table_case2.txt)
+copy_test_data(ref_table_case3.txt)
+copy_test_data(ref_tableq.txt)
