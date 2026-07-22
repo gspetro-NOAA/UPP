@@ -12,6 +12,7 @@
 # Wen Meng / Ben Blake       07/2025  Update test names, add RRFS, MPAS, DAFS, SFS tests
 # Ben Blake                  12/2025  Remove Hera support
 # Ben Blake                  04/2026  Remove RRFS IFI support
+# Chad Lyden / Gillian Petro 07/2026  Add support for Spack 2.1.1 and oneapi compiler option
 ######################################################################
 set -xue
 SECONDS=0
@@ -40,7 +41,7 @@ Results are here:
 
 Always set these:
   -a account = accounting code for job submission. Default account is often overused. Always set this!
-  -C = chosen compiler. (Capital C) Default: intel. Mandatory on Ursa!
+  -C = chosen compiler. (Capital C) Default: oneapi. Mandatory on Ursa!
   -r rundir = path to a scrub space. Default area is often over quota. Always set this!
 
 General options:
@@ -208,12 +209,11 @@ if [ $mac2 = uf ]; then # for Ursa
  export homedir=${homedir:-"/scratch4/NAGAPE/epic/role-epic/ursa/UPP/test_suite"}
  export rundir=${rundir:-"/scratch3/NCEPDEV/stmp/$USER/scrub"}
  export accnr=${accnr:-"rtrr"}
- module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
- module use /contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-haww6b3/gcc/12.4.0
- module load stack-oneapi/2024.2.1
- module load stack-intel-oneapi-mpi/2021.13
- module load prod_util/2.1.1
- module load python/3.11.7
+ module use /contrib/spack-stack/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/modules/Core
+ module load stack-intel-oneapi-compilers/2025.3.1
+ module load stack-intel-oneapi-mpi/2021.17
+ module load prod_util/2.1.2
+ module load python/3.11.11
 elif [ $mac3 = orio ] ; then
  export machine=ORION
  export homedir=${homedir:-"/work/noaa/epic/role-epic/orion/UPP"}
@@ -254,10 +254,10 @@ fi
 
 if [[ "$compiler" == MISSING ]] ; then
    if [[ "$machine" == "URSA" ]]; then
-	   usage FATAL ERROR: You must specify the compiler on Ursa: -C 'intel|intelllvm' 1>&2
+	   usage FATAL ERROR: You must specify the compiler on Ursa: -C 'intel|intelllvm|oneapi' 1>&2
 	   exit 2
    else
-	   compiler=intel
+	   compiler=oneapi
    fi
 fi
 
