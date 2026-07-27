@@ -18,8 +18,8 @@ local ufs_modules = {
   {["nemsio"]          = "2.5.5"  },
   {["sigio"]           = "2.3.3"  },
   {["wrf-io"]          = "1.3.0"  },
-  --{["wgrib2"]          = "3.8.0"  },
-  --{["prod_util"]       = "2.1.2"  },
+  {["wgrib2"]          = "3.8.0"  },
+  {["prod_util"]       = "2.1.2"  },
 }
 
 for i = 1, #ufs_modules do
