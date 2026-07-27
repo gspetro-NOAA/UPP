@@ -220,24 +220,24 @@ elif [ $mac3 = orio ] ; then
  export rundir=${rundir:-"/work2/noaa/stmp/$USER"}
  export accnr=${accnr:-"rtrr"}
  module purge
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/Core
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/intel-oneapi-mpi/2021.13-li242lf/gcc/12.2.0
- module load stack-oneapi/2024.2.1
- module load stack-intel-oneapi-mpi/2021.13
- module load prod_util/2.1.1
- module load python/3.11.7
+ module use /apps/contrib/spack-stack/modulefiles
+ module use /apps/contrib/spack-stack/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/modules/Core
+ module load stack-intel-oneapi-compilers/2025.3.1
+ module load stack-intel-oneapi-mpi/2021.17
+ module load prod_util/2.1.2
+ module load python/3.11.11
 elif [ $mac3 = herc ] ; then
  export machine=HERCULES
  export homedir=${homedir:-"/work/noaa/epic/role-epic/hercules/UPP"}
  export rundir=${rundir:-"/work2/noaa/stmp/$USER"}
  export accnr=${accnr:-"rtrr"}
  module purge
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/Core
- module use /apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/intel-oneapi-mpi/2021.13-sqiixt7/gcc/13.3.0
- module load stack-oneapi/2024.2.1
- module load stack-intel-oneapi-mpi/2021.13
- module load prod_util/2.1.1
- module load python/3.11.7
+ module use /apps/contrib/spack-stack/modulefiles
+ module use /apps/contrib/spack-stack/spack-stack-2.1.1/envs/ue-oneapi-2025.3.1/modules/Core
+ module load stack-intel-oneapi-compilers/2025.3.1
+ module load stack-intel-oneapi-mpi/2021.17
+ module load prod_util/2.1.2
+ module load python/3.11.11
 elif [ $mac = d -o $mac = c ]; then #for WCOSS2
  export machine=WCOSS2
  export homedir=${homedir:-"/lfs/h2/emc/vpppg/noscrub/wen.meng/test_suite"}
