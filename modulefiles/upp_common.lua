@@ -1,6 +1,6 @@
 whatis("Description: UPP build environment common libraries")
 
-help([[Load UFS Model common libraries]])
+help([[Load UPP common libraries]])
 
 local ufs_modules = {
   {["jasper"]          = "4.2.4" },
