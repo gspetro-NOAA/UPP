@@ -14,9 +14,6 @@ load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.31.8"
 load(pathJoin("cmake", cmake_ver))
 
-python_ver=os.getenv("python_ver") or "3.11.7"
-load(pathJoin("python", python_ver))
-
 load("upp_common")
 
 setenv("CC", "mpiicx")
