@@ -41,7 +41,7 @@ Results are here:
 
 Always set these:
   -a account = accounting code for job submission. Default account is often overused. Always set this!
-  -C = chosen compiler. (Capital C) Default: oneapi. Mandatory on Ursa!
+  -C = chosen compiler. (Capital C) Default: oneapi for R&D machines; intel for WCOSS2. 
   -r rundir = path to a scrub space. Default area is often over quota. Always set this!
 
 General options:
@@ -253,9 +253,8 @@ elif [ $mac = d -o $mac = c ]; then #for WCOSS2
 fi
 
 if [[ "$compiler" == MISSING ]] ; then
-   if [[ "$machine" == "URSA" ]]; then
-	   usage FATAL ERROR: You must specify the compiler on Ursa: -C 'intel|intelllvm|oneapi' 1>&2
-	   exit 2
+   if [[ "$machine" == "WCOSS2" ]]; then
+	   compiler=intel
    else
 	   compiler=oneapi
    fi
